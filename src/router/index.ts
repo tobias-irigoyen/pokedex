@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import MainContent from '../views/home/mainContent.vue';
+import mainContent from '../views/home/mainContent.vue';
 import PokemonDetail from '../views/pokemonDetail/pokemonDetail.vue';
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: MainContent
+    component: mainContent
   },
   {
     path: '/pokemon-detail',
