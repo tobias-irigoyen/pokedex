@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import mainContent from './views/home/mainContent.vue'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap'; 
 </script>
 
 <template>
-  <main>
+  <main class="container-fluid">
     <router-view />
   </main>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 </style>
