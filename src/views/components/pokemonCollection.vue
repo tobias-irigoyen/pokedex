@@ -81,9 +81,19 @@
             >
           </div>
           <div class="pokemon-info">
-            <span>HP:</span> {{ pokemon.hp_points }} <span>Height:</span> {{ pokemon.height }}
-            <span>Weight:</span> {{ pokemon.weight }} <span>Attacks:</span>
-            {{ pokemon.attacks.join(', ') }}
+            <div class="pokemon-hp">
+                <span class="hp-bar"></span>
+                <span class="hp-points">{{ pokemon.hp_points }} / {{ pokemon.hp_points }} HP</span>
+            </div>
+            <div class="pokemon-stats">
+                <div class="pokemon-height">
+                    <span>{{ pokemon.height }} M</span> 
+                </div>
+                <div class="pokemon-height">
+                    <span>{{ pokemon.weight }} KG</span> 
+                </div>
+            </div>
+            <!--span>Attacks:{{ pokemon.attacks.join(', ') }}</span-->
           </div>
         </div>
       </div>
@@ -131,7 +141,7 @@ console.log(getPokemonData)
 <style lang="scss" scoped>
 .inner-pokemon-container {
   box-shadow: 0 5px 5px #00000041;
-  height: 360px;
+  height: 420px;
   border-radius: 0.5rem;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -153,13 +163,14 @@ console.log(getPokemonData)
         background-color: rgba(117, 117, 117, 0.196);
         padding: .25rem .5rem;
         border-radius: .5rem;
+        text-shadow: 1px 1px 1px #b0b0b0
     }
   .pokemon-image {
-    height: 140px;
-    width: 140px;
+    height: 180px;
+    width: 180px;
   }
   &.type-normal {
-    background: linear-gradient(to bottom, #d6d6d6, #8e8e8e);
+    background: linear-gradient(to bottom, #ebebeb, #8e8e8e);
   }
 
   &.type-fighting {
@@ -170,7 +181,7 @@ console.log(getPokemonData)
   }
 
   &.type-poison {
-    background: linear-gradient(to bottom, #e185fa, #622a72);
+    background: linear-gradient(to bottom, #f1c8fc, #622a72);
   }
 
   &.type-ground {
@@ -182,7 +193,7 @@ console.log(getPokemonData)
   }
 
   &.type-bug {
-    background: linear-gradient(to bottom, #64dd17, #479c13);
+    background: linear-gradient(to bottom, #a6fe70, #479c13);
   }
 
   &.type-ghost {
@@ -194,7 +205,7 @@ console.log(getPokemonData)
   }
 
   &.type-fire {
-    background: linear-gradient(to bottom, #fe9400, #d71301);
+    background: linear-gradient(to bottom, #ffbf64, #ae501a);
   }
 
   &.type-water {
@@ -226,7 +237,7 @@ console.log(getPokemonData)
   }
 
   &.type-fairy {
-    background: linear-gradient(to bottom, #ffa7f8, #9f679a);
+    background: linear-gradient(to bottom, #ffb9f9, #9f679a);
   }
 
   .badge-type-normal {
@@ -288,5 +299,37 @@ console.log(getPokemonData)
   display: flex;
   justify-content: center;
   gap: .5rem;
+}
+.pokemon-info {
+    background-color: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 5px 5px #00000011;
+    border-radius: .5rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    .pokemon-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        * {
+            font-weight: 600;
+        }
+    }
+    .pokemon-hp {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .hp-bar {
+            width: 100%;
+            max-width: 80%;
+            height: 5px;
+            background-color: rgb(26, 223, 190);
+            display: flex;
+        }
+        .hp-points {
+            font-size: .925rem;
+            margin-top: .25rem;
+        }
+    }
 }
 </style>
