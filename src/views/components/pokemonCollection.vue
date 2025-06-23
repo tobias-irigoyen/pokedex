@@ -737,7 +737,7 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
     right: 1rem;
   }
   .pokeball-image-2 {
-    opacity: .075;
+    opacity: .05;
     position: absolute;
     width: 50%;
     left: -25%;
