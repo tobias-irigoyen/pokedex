@@ -41,7 +41,7 @@
             class="pagination-btn first-last-btn"
             title="First page"
           >
-            ⟪
+            <i class="bi bi-chevron-double-left"></i>
           </button>
           
           <button 
@@ -50,7 +50,7 @@
             class="pagination-btn prev-next-btn"
             title="Previous page"
           >
-            ⟨
+            <i class="bi bi-chevron-left"></i>
           </button>
           
           <!-- Números de página -->
@@ -71,7 +71,7 @@
             class="pagination-btn prev-next-btn"
             title="Next page"
           >
-            ⟩
+            <i class="bi bi-chevron-right"></i>
           </button>
           
           <button 
@@ -80,7 +80,7 @@
             class="pagination-btn first-last-btn"
             title="Last page"
           >
-            ⟫
+            <i class="bi bi-chevron-double-right"></i>
           </button>
         </div>
         
@@ -126,6 +126,7 @@
         >
           <span class="pokemon-number">#{{ pokemon.originalIndex + 1 }}</span>
           <img :src="pokeBall" alt="pokeball" class="pokeball-image" />
+          <img :src="pokeBall" alt="pokeball" class="pokeball-image-2" />
           <div class="name-and-image">
             <img :src="pokemon.img" :alt="pokemon.name" class="pokemon-image" />
             <h2 class="pokemon-name">{{ pokemon.name }}</h2>
@@ -209,7 +210,7 @@
           class="pagination-btn first-last-btn"
           title="First page"
         >
-          ⟪
+          <i class="bi bi-chevron-double-left"></i>
         </button>
         
         <!-- Botón Página Anterior -->
@@ -219,7 +220,7 @@
           class="pagination-btn prev-next-btn"
           title="Previous page"
         >
-          ⟨
+          <i class="bi bi-chevron-left"></i>
         </button>
         
         <!-- Números de página -->
@@ -241,7 +242,7 @@
           class="pagination-btn prev-next-btn"
           title="Next page"
         >
-          ⟩
+          <i class="bi bi-chevron-right"></i>
         </button>
         
         <!-- Botón Última Página -->
@@ -251,7 +252,7 @@
           class="pagination-btn first-last-btn"
           title="Last page"
         >
-          ⟫
+          <i class="bi bi-chevron-double-right"></i>
         </button>
       </div>
       
@@ -540,7 +541,7 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   }
 }
 
-.first-last-btn, .prev-next-btn {
+.first-last-btn i, .prev-next-btn i{
   font-size: 1.2rem;
   color: #444;
 }
@@ -590,6 +591,7 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   margin-bottom: 1rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
+  overflow: hidden;
   
   &:hover {
     transform: translateY(-5px);
@@ -733,6 +735,13 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
     position: absolute;
     width: 20%;
     right: 1rem;
+  }
+  .pokeball-image-2 {
+    opacity: .075;
+    position: absolute;
+    width: 50%;
+    left: -25%;
+    bottom: 30%;
   }
 }
 
