@@ -7,12 +7,12 @@
                 <h1 class="sr-only">Pokemon</h1>
             </div>
             <div class="col-4 info-col">
-                <h2>Use our Pokedex</h2>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                <button class="primary-button">Call to action</button>
+                <h2>Try the Pokedex and found the Pokemons</h2>
+                <p>Use our Pokédex by entering the Pokemon's number or name to see its image, type, weight, height, and much more!</p>
+                <button class="primary-button">Try it!</button>
             </div>
             <div class="col-8 header-image-container">
-                <img :src="pokedex" alt="pikachu" class="header-image" />
+                <img :src="pokedex" alt="pokedex" class="header-image" />
             </div>
         </div>
     </div>
@@ -21,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import pikachuImage from "../../assets/img/pikachu.png"
 import pokedex from "../../assets/img/pokedex-3d.png"
 import pokedexLogo from "../../assets/img/pokedex-logo.png"
 
@@ -29,13 +28,15 @@ import pokedexLogo from "../../assets/img/pokedex-logo.png"
 
 <style lang="scss" scoped>
 .header {
-    background-color: #fafafa;
+    background-color: #ececec;
     margin-left: -12px;
     margin-right: -12px;
     padding-top: 24px;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
     .logo-container {
         img {
-            max-width: 200px;
+            max-width: 240px;
         }
     }
 }
@@ -43,18 +44,23 @@ import pokedexLogo from "../../assets/img/pokedex-logo.png"
     height: 400px;
 }
 .primary-button {
-    background: #4a4aff;
+    background-color: #d6020f;
     color: #FFF;
-    padding: 6px 50px;
+    padding: 0.75rem 1.5rem;
     box-shadow: none;
-    border: none;
     font-weight: 600;
+    border-radius: .5rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    &:hover {
+        background-color: #bb000c;
+    }
 }
 .header-image-container {
     display: flex;
     justify-content: flex-end;
 }
-.info-col {
+.info-col,
+.header-image-container {
     padding-top: 36px;
 }
 

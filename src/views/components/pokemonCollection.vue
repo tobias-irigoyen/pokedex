@@ -7,7 +7,7 @@
             v-if="!isLoading"
             v-model="searchName" 
             type="text" 
-            placeholder="Search by name..." 
+            placeholder="Find your Pokemon..." 
             class="search-input search-by-name"
           />
           <div v-if="isLoading" class="skeleton w-100"></div>
@@ -314,8 +314,9 @@ const getPokemonData = async () => {
 const filteredPokemons = computed(() => {
   return pokemons.value.filter(pokemon => {
     const matchesName = pokemon.name.toLowerCase().includes(searchName.value.toLowerCase())
+    const matchesEnteredType = pokemon.types[0].toLowerCase().includes(searchName.value.toLowerCase())
     const matchesType = searchType.value === '' || pokemon.types.includes(searchType.value)
-    return matchesName && matchesType
+    return (matchesName || matchesEnteredType) && matchesType
   })
 })
 
