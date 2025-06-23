@@ -33,72 +33,68 @@
     <div class="row">
       <div class="col-12">
         <div v-if="totalPages > 1" class="pagination-container">
-        <div class="pagination">
-          
-          <button 
-            @click="goToPage(1)" 
-            :disabled="currentPage === 1"
-            class="pagination-btn first-last-btn"
-            title="First page"
-          >
-            <i class="bi bi-chevron-double-left"></i>
-          </button>
-          
-          <button 
-            @click="goToPage(currentPage - 1)" 
-            :disabled="currentPage === 1"
-            class="pagination-btn prev-next-btn"
-            title="Previous page"
-          >
-            <i class="bi bi-chevron-left"></i>
-          </button>
-          
-          <!-- Números de página -->
-          <template v-for="page, in visiblePages" :key="page">
-            <button
-              v-if="page !== '...'"
-              @click="goToPage(page)"
-              :class="['pagination-btn', 'page-number', { 'active': page === currentPage }]"
+          <div class="pagination">
+            
+            <button 
+              @click="goToPage(1)" 
+              :disabled="currentPage === 1"
+              class="pagination-btn first-last-btn"
+              title="First page"
             >
-              {{ page }}
+              <i class="bi bi-chevron-double-left"></i>
             </button>
-            <span v-else class="pagination-ellipsis">...</span>
-          </template>
-          
-          <button 
-            @click="goToPage(currentPage + 1)" 
-            :disabled="currentPage === totalPages"
-            class="pagination-btn prev-next-btn"
-            title="Next page"
-          >
-            <i class="bi bi-chevron-right"></i>
-          </button>
-          
-          <button 
-            @click="goToPage(totalPages)" 
-            :disabled="currentPage === totalPages"
-            class="pagination-btn first-last-btn"
-            title="Last page"
-          >
-            <i class="bi bi-chevron-double-right"></i>
-          </button>
-        </div>
-        
-        <!-- Selector de elementos por página -->
-        <div class="items-per-page">
-          <label>Items per page:</label>
-          <select v-model="itemsPerPage" @change="handleItemsPerPageChange">
-            <option :value="18">18</option>
-            <option :value="36">36</option>
-            <option :value="54">54</option>
-            <option :value="72">72</option>
-          </select>
-        </div>
+            
+            <button 
+              @click="goToPage(currentPage - 1)" 
+              :disabled="currentPage === 1"
+              class="pagination-btn prev-next-btn"
+              title="Previous page"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            
+            <template v-for="page, in visiblePages" :key="page">
+              <button
+                v-if="page !== '...'"
+                @click="goToPage(page)"
+                :class="['pagination-btn', 'page-number', { 'active': page === currentPage }]"
+              >
+                {{ page }}
+              </button>
+              <span v-else class="pagination-ellipsis">...</span>
+            </template>
+            
+            <button 
+              @click="goToPage(currentPage + 1)" 
+              :disabled="currentPage === totalPages"
+              class="pagination-btn prev-next-btn"
+              title="Next page"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+            
+            <button 
+              @click="goToPage(totalPages)" 
+              :disabled="currentPage === totalPages"
+              class="pagination-btn first-last-btn"
+              title="Last page"
+            >
+              <i class="bi bi-chevron-double-right"></i>
+            </button>
+          </div>
+          <div class="items-per-page">
+            <label>Items per page:</label>
+            <select v-model="itemsPerPage" @change="handleItemsPerPageChange">
+              <option :value="18">18</option>
+              <option :value="36">36</option>
+              <option :value="54">54</option>
+              <option :value="72">72</option>
+            </select>
+          </div>
       </div>
     </div>
     </div>
 
-    <!-- Grid de Pokemon -->
     <div class="row">
       <div class="col-2" v-for="(pokemon, index) in paginatedPokemons" :key="index">
         <div
@@ -199,76 +195,72 @@
         </div>
       </div>
     </div>
-
-    <!-- Paginación -->
-    <div v-if="totalPages > 1" class="pagination-container">
-      <div class="pagination">
-        <!-- Botón Primera Página -->
-        <button 
-          @click="goToPage(1)" 
-          :disabled="currentPage === 1"
-          class="pagination-btn first-last-btn"
-          title="First page"
-        >
-          <i class="bi bi-chevron-double-left"></i>
-        </button>
-        
-        <!-- Botón Página Anterior -->
-        <button 
-          @click="goToPage(currentPage - 1)" 
-          :disabled="currentPage === 1"
-          class="pagination-btn prev-next-btn"
-          title="Previous page"
-        >
-          <i class="bi bi-chevron-left"></i>
-        </button>
-        
-        <!-- Números de página -->
-        <template v-for="page, in visiblePages" :key="page">
-          <button
-            v-if="page !== '...'"
-            @click="goToPage(page)"
-            :class="['pagination-btn', 'page-number', { 'active': page === currentPage }]"
-          >
-            {{ page }}
-          </button>
-          <span v-else class="pagination-ellipsis">...</span>
-        </template>
-        
-        <!-- Botón Página Siguiente -->
-        <button 
-          @click="goToPage(currentPage + 1)" 
-          :disabled="currentPage === totalPages"
-          class="pagination-btn prev-next-btn"
-          title="Next page"
-        >
-          <i class="bi bi-chevron-right"></i>
-        </button>
-        
-        <!-- Botón Última Página -->
-        <button 
-          @click="goToPage(totalPages)" 
-          :disabled="currentPage === totalPages"
-          class="pagination-btn first-last-btn"
-          title="Last page"
-        >
-          <i class="bi bi-chevron-double-right"></i>
-        </button>
-      </div>
-      
-      <!-- Selector de elementos por página -->
-      <div class="items-per-page">
-        <label>Items per page:</label>
-        <select v-model="itemsPerPage" @change="handleItemsPerPageChange">
-          <option :value="18">18</option>
-          <option :value="36">36</option>
-          <option :value="54">54</option>
-          <option :value="72">72</option>
-        </select>
+    <div class="row">
+      <div class="col-12">
+        <div v-if="totalPages > 1" class="pagination-container">
+          <div class="pagination">
+            
+            <button 
+              @click="goToPage(1)" 
+              :disabled="currentPage === 1"
+              class="pagination-btn first-last-btn"
+              title="First page"
+            >
+              <i class="bi bi-chevron-double-left"></i>
+            </button>
+            
+            <button 
+              @click="goToPage(currentPage - 1)" 
+              :disabled="currentPage === 1"
+              class="pagination-btn prev-next-btn"
+              title="Previous page"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            
+            <template v-for="page, in visiblePages" :key="page">
+              <button
+                v-if="page !== '...'"
+                @click="goToPage(page)"
+                :class="['pagination-btn', 'page-number', { 'active': page === currentPage }]"
+              >
+                {{ page }}
+              </button>
+              <span v-else class="pagination-ellipsis">...</span>
+            </template>
+            
+            <button 
+              @click="goToPage(currentPage + 1)" 
+              :disabled="currentPage === totalPages"
+              class="pagination-btn prev-next-btn"
+              title="Next page"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+            
+            <button 
+              @click="goToPage(totalPages)" 
+              :disabled="currentPage === totalPages"
+              class="pagination-btn first-last-btn"
+              title="Last page"
+            >
+              <i class="bi bi-chevron-double-right"></i>
+            </button>
+          </div>
+          
+          <div class="items-per-page">
+            <label>Items per page:</label>
+            <select v-model="itemsPerPage" @change="handleItemsPerPageChange">
+              <option :value="18">18</option>
+              <option :value="36">36</option>
+              <option :value="54">54</option>
+              <option :value="72">72</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Mensaje cuando no hay resultados -->
     <div v-if="filteredPokemons.length === 0 && pokemons.length > 0" class="no-results">
       <p>No Pokemons found</p>
     </div>
@@ -741,7 +733,7 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
     position: absolute;
     width: 50%;
     left: -25%;
-    bottom: 30%;
+    bottom: 33%;
   }
 }
 
