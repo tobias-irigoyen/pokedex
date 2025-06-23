@@ -12,7 +12,7 @@
                 <button class="primary-button">Call to action</button>
             </div>
             <div class="col-8 header-image-container">
-                <img :src="pikachuImage" alt="pikachu" class="header-image" />
+                <img :src="pokedex" alt="pikachu" class="header-image" />
             </div>
         </div>
     </div>
@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import pikachuImage from "../../assets/img/pikachu.png"
+import pokedex from "../../assets/img/pokedex-3d.png"
 import pokedexLogo from "../../assets/img/pokedex-logo.png"
 
 </script>

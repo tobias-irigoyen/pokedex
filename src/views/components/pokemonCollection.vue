@@ -398,7 +398,7 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
 .search-section {
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #d6020f 0%, #800e0e 100%);
+  background-color: #d6020f;
   border-radius: 1rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
@@ -422,14 +422,10 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
   text-transform: capitalize;
   
   &:focus {
     outline: none;
-    background: rgba(255, 255, 255, 1);
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
   }
   option {
@@ -563,7 +559,6 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
     padding: 0.5rem;
     border: none;
     border-radius: 0.5rem;
-    background: rgba(255, 255, 255, 0.9);
     color: #333;
     font-weight: 600;
     cursor: pointer;
