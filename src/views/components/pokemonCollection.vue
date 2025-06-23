@@ -96,7 +96,7 @@
     </div>
 
     <div class="row">
-      <div class="col-2" v-for="(pokemon, index) in paginatedPokemons" :key="index">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" v-for="(pokemon, index) in paginatedPokemons" :key="index">
         <div
           class="inner-pokemon-container"
           :class="{
@@ -393,6 +393,7 @@ watch([searchName, searchType], () => {
 onMounted(getPokemonData)
 
 const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug","ghost","steel","fire","water","grass","electric","psychic","ice","dragon","dark","fairy"]
+
 </script>
 
 <style lang="scss" scoped>
@@ -424,6 +425,7 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   border-radius: 0.5rem;
   font-size: 1rem;
   text-transform: capitalize;
+  background-color: #FFF;
   
   &:focus {
     outline: none;

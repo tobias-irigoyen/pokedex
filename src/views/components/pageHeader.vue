@@ -3,15 +3,15 @@
     <div class="container">
         <div class="row">
             <div class="col-12 logo-container text-center">
-                <img :src="pokedexLogo" alt="pokemon logo" />
-                <h1 class="sr-only">Pokemon</h1>
+                <img :src="pokedexLogo" alt="pokedex logo" />
+                <h1 class="sr-only">Pokedex</h1>
             </div>
-            <div class="col-4 info-col">
-                <h2>Try the Pokedex and found the Pokemons</h2>
-                <p>Use our Pokédex by entering the Pokemon's number or name to see its image, type, weight, height, and much more!</p>
+            <div class="col-6 col-md-4 col-lg-4 col-xl-4 info-col">
+                <h2>Try the Pokedex and find the Pokemons</h2>
+                <p>Use our Pokedex by entering the Pokemon's number or name to see its image, type, weight, height, and much more!</p>
                 <button class="primary-button">Try it!</button>
             </div>
-            <div class="col-8 header-image-container">
+            <div class="col-6 col-md-8 col-lg-8 col-xl-8 header-image-container">
                 <img :src="pokedex" alt="pokedex" class="header-image" />
             </div>
         </div>
@@ -63,5 +63,24 @@ import pokedexLogo from "../../assets/img/pokedex-logo.png"
 .header-image-container {
     padding-top: 36px;
 }
+
+@media (max-width: 576px) {
+    .header-image-container {
+        align-items: center;
+        .header-image {
+            width: 145.66px;
+            height: 165.83px;
+        }
+    }
+}
+@media (min-width: 576px) and (max-width: 768px){
+    .header-image-container {
+        .header-image {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
+
 
 </style>
