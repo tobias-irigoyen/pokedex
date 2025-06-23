@@ -1,71 +1,122 @@
 <template>
-<section id="pokemon-collection">
+  <section id="pokemon-collection">
     <div class="row">
-        <div class="col-3"  v-for="pokemon in pokemons" :key="pokemon.puntos_vida">
-            <div class="inner-pokemon-container"
-            :class="{ 
-                'type-normal': pokemon.types[0] === 'normal',
-                'type-fighting': pokemon.types[0] === 'fighting',
-                'type-flying': pokemon.types[0] === 'flying',
-                'type-poison': pokemon.types[0] === 'poison',
-                'type-ground': pokemon.types[0] === 'ground',
-                'type-rock': pokemon.types[0] === 'rock',
-                'type-bug': pokemon.types[0] === 'bug',
-                'type-ghost': pokemon.types[0] === 'ghost',
-                'type-steel': pokemon.types[0] === 'steel',
-                'type-fire': pokemon.types[0] === 'fire',
-                'type-water': pokemon.types[0] === 'water',
-                'type-grass': pokemon.types[0] === 'grass',
-                'type-electric': pokemon.types[0] === 'electric',
-                'type-psychic': pokemon.types[0] === 'psychic',
-                'type-ice': pokemon.types[0] === 'ice',
-                'type-dragon': pokemon.types[0] === 'dragon',
-                'type-dark': pokemon.types[0] === 'dark',
-                'type-fairy': pokemon.types[0] === 'fairy',
-                }">
-                <h2>{{ pokemon.name }}</h2>
-                <img :src="pokemon.img" :alt="pokemon.name" />
-                <span>HP:</span> {{ pokemon.hp_points }}
-                <span>Height:</span> {{ pokemon.height }}
-                <span>Weight:</span> {{ pokemon.weight }}
-                <span>Types:</span> {{ pokemon.types.join(', ') }}
-                <span>Attacks:</span> {{ pokemon.attacks.join(', ') }}
-            </div>
+      <div class="col-2" v-for="(pokemon, index) in pokemons" :key="pokemon.index">
+        <div
+          class="inner-pokemon-container"
+          :class="{
+            'type-normal': pokemon.types[0] === 'normal',
+            'type-fighting': pokemon.types[0] === 'fighting',
+            'type-flying': pokemon.types[0] === 'flying',
+            'type-poison': pokemon.types[0] === 'poison',
+            'type-ground': pokemon.types[0] === 'ground',
+            'type-rock': pokemon.types[0] === 'rock',
+            'type-bug': pokemon.types[0] === 'bug',
+            'type-ghost': pokemon.types[0] === 'ghost',
+            'type-steel': pokemon.types[0] === 'steel',
+            'type-fire': pokemon.types[0] === 'fire',
+            'type-water': pokemon.types[0] === 'water',
+            'type-grass': pokemon.types[0] === 'grass',
+            'type-electric': pokemon.types[0] === 'electric',
+            'type-psychic': pokemon.types[0] === 'psychic',
+            'type-ice': pokemon.types[0] === 'ice',
+            'type-dragon': pokemon.types[0] === 'dragon',
+            'type-dark': pokemon.types[0] === 'dark',
+            'type-fairy': pokemon.types[0] === 'fairy',
+          }"
+        >
+          <span class="pokemon-number">#{{ index + 1 }}</span>
+          <div class="name-and-image">
+            <img :src="pokemon.img" :alt="pokemon.name" class="pokemon-image" />
+            <h2 class="pokemon-name">{{ pokemon.name }}</h2>
+          </div>
+          <div class="types-badges-container">
+            <span
+              class="badge"
+              :class="{
+                'badge-type-normal': pokemon.types[0] === 'normal',
+                'badge-type-fighting': pokemon.types[0] === 'fighting',
+                'badge-type-flying': pokemon.types[0] === 'flying',
+                'badge-type-poison': pokemon.types[0] === 'poison',
+                'badge-type-ground': pokemon.types[0] === 'ground',
+                'badge-type-rock': pokemon.types[0] === 'rock',
+                'badge-type-bug': pokemon.types[0] === 'bug',
+                'badge-type-ghost': pokemon.types[0] === 'ghost',
+                'badge-type-steel': pokemon.types[0] === 'steel',
+                'badge-type-fire': pokemon.types[0] === 'fire',
+                'badge-type-water': pokemon.types[0] === 'water',
+                'badge-type-grass': pokemon.types[0] === 'grass',
+                'badge-type-electric': pokemon.types[0] === 'electric',
+                'badge-type-psychic': pokemon.types[0] === 'psychic',
+                'badge-type-ice': pokemon.types[0] === 'ice',
+                'badge-type-dragon': pokemon.types[0] === 'dragon',
+                'badge-type-dark': pokemon.types[0] === 'dark',
+                'badge-type-fairy': pokemon.types[0] === 'fairy',
+              }"
+              >{{ pokemon.types[0] }}</span
+            >
+            <span
+              class="badge"
+              :class="{
+                'badge-type-normal': pokemon.types[1] === 'normal',
+                'badge-type-fighting': pokemon.types[1] === 'fighting',
+                'badge-type-flying': pokemon.types[1] === 'flying',
+                'badge-type-poison': pokemon.types[1] === 'poison',
+                'badge-type-ground': pokemon.types[1] === 'ground',
+                'badge-type-rock': pokemon.types[1] === 'rock',
+                'badge-type-bug': pokemon.types[1] === 'bug',
+                'badge-type-ghost': pokemon.types[1] === 'ghost',
+                'badge-type-steel': pokemon.types[1] === 'steel',
+                'badge-type-fire': pokemon.types[1] === 'fire',
+                'badge-type-water': pokemon.types[1] === 'water',
+                'badge-type-grass': pokemon.types[1] === 'grass',
+                'badge-type-electric': pokemon.types[1] === 'electric',
+                'badge-type-psychic': pokemon.types[1] === 'psychic',
+                'badge-type-ice': pokemon.types[1] === 'ice',
+                'badge-type-dragon': pokemon.types[1] === 'dragon',
+                'badge-type-dark': pokemon.types[1] === 'dark',
+                'badge-type-fairy': pokemon.types[1] === 'fairy',
+              }"
+              >{{ pokemon.types[1] }}</span
+            >
+          </div>
+          <div class="pokemon-info">
+            <span>HP:</span> {{ pokemon.hp_points }} <span>Height:</span> {{ pokemon.height }}
+            <span>Weight:</span> {{ pokemon.weight }} <span>Attacks:</span>
+            {{ pokemon.attacks.join(', ') }}
+          </div>
         </div>
+      </div>
     </div>
-</section>
-
+  </section>
 </template>
 
 <script setup lang="ts">
-
-import axios from 'axios';
-import { ref, onMounted } from 'vue';
+import axios from 'axios'
+import { ref, onMounted } from 'vue'
 
 const pokemons = ref([])
 
 const getPokemonData = async () => {
-  const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=150')
+  const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151')
   const results = response.data.results
 
   const detailedData = await Promise.all(
     results.map(async (pokemon) => {
       const res = await axios.get(pokemon.url)
       const data = res.data
-      const hp = data.stats.find(s => s.stat.name === 'hp')?.base_stat || 0
-      const types = data.types.map(t => t.type.name)
-      const attacks = data.moves.slice(0, 4).map(m => m.move.name)
-
-      console.log('data.types', data.types)
+      const hp = data.stats.find((s) => s.stat.name === 'hp')?.base_stat || 0
+      const types = data.types.map((t) => t.type.name)
+      const attacks = data.moves.slice(0, 4).map((m) => m.move.name)
 
       return {
         name: data.name,
-        img: data.sprites.front_default,
+        img: data.sprites.other['official-artwork'].front_default,
         hp_points: hp,
         height: data.height,
         weight: data.weight,
         types: types,
-        attacks: attacks
+        attacks: attacks,
       }
     })
   )
@@ -78,5 +129,164 @@ console.log(getPokemonData)
 </script>
 
 <style lang="scss" scoped>
+.inner-pokemon-container {
+  box-shadow: 0 5px 5px #00000041;
+  height: 360px;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  * {
+    color: #fff;
+  }
+  .name-and-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .pokemon-name {
+      font-size: 1.25rem;
+      text-transform: capitalize;
+    }
+  }
+    .pokemon-number {
+        font-size: 1rem;
+        background-color: rgba(117, 117, 117, 0.196);
+        padding: .25rem .5rem;
+        border-radius: .5rem;
+    }
+  .pokemon-image {
+    height: 140px;
+    width: 140px;
+  }
+  &.type-normal {
+    background: linear-gradient(to bottom, #d6d6d6, #8e8e8e);
+  }
 
+  &.type-fighting {
+    background: linear-gradient(to bottom, #f2aa62, #8c5b29);
+  }
+  &.type-flying {
+    background: linear-gradient(to bottom, #81a0e8, #475a86);
+  }
+
+  &.type-poison {
+    background: linear-gradient(to bottom, #e185fa, #622a72);
+  }
+
+  &.type-ground {
+    background: linear-gradient(to bottom, #fae85d, #b9a932);
+  }
+
+  &.type-rock {
+    background: linear-gradient(to bottom, #ffd87e, #af9350);
+  }
+
+  &.type-bug {
+    background: linear-gradient(to bottom, #64dd17, #479c13);
+  }
+
+  &.type-ghost {
+    background: linear-gradient(to bottom, #cc31ef, #711b85);
+  }
+
+  &.type-steel {
+    background: linear-gradient(to bottom, #d4d4d4, #606060);
+  }
+
+  &.type-fire {
+    background: linear-gradient(to bottom, #fe9400, #d71301);
+  }
+
+  &.type-water {
+    background: linear-gradient(to bottom, #2980b9, #6dd5fa);
+  }
+
+  &.type-grass {
+    background: linear-gradient(to bottom, #9dce82, #aadc37);
+  }
+
+  &.type-electric {
+    background: linear-gradient(to bottom, #ffed25, #aea007);
+  }
+
+  &.type-psychic {
+    background: linear-gradient(to bottom, #f364d4, #873876);
+  }
+
+  &.type-ice {
+    background: linear-gradient(to bottom, #67e2de, #3e9895);
+  }
+
+  &.type-dragon {
+    background: linear-gradient(to bottom, #abeff8, #398d98);
+  }
+
+  &.type-dark {
+    background: linear-gradient(to bottom, #886025, #61451a);
+  }
+
+  &.type-fairy {
+    background: linear-gradient(to bottom, #ffa7f8, #9f679a);
+  }
+
+  .badge-type-normal {
+    background: #8e8e8e;
+  }
+  .badge-type-flying {
+    background: #475a86;
+  }
+  .badge-type-poison {
+    background: #622a72;
+  }
+  .badge-type-ground {
+    background: #b9a932;
+  }
+  .badge-type-rock {
+    background: #af9350;
+  }
+  .badge-type-bug {
+    background: #5fd317;
+  }
+  .badge-type-ghost {
+    background: #cc31ef;
+  }
+  .badge-type-steel {
+    background: #d4d4d4;
+  }
+  .badge-type-fire {
+    background: #ab1c1c;
+  }
+  .badge-type-water {
+    background: #3763e8;
+  }
+  .badge-type-grass {
+    background: green;
+  }
+  .badge-type-electric {
+    background: #ffed25;
+  }
+  .badge-type-psychic {
+    background: #f364d4;
+  }
+  .badge-type-ice {
+    background: #3e9895;
+  }
+  .badge-type-dragon {
+    background: #71c8d3;
+  }
+  .badge-type-dark {
+    background: #886025;
+  }
+  .badge-type-fairy {
+    background: #ffa7f8;
+  }
+  .badge-type-fighting {
+    background: #8c5b29;
+  }
+}
+.types-badges-container {
+  display: flex;
+  justify-content: center;
+  gap: .5rem;
+}
 </style>
