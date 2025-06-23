@@ -1,7 +1,32 @@
 <template>
   <section id="pokemon-collection">
+    <!-- Sección de búsqueda -->
+    <div class="search-section">
+      <div class="search-container">
+        <div class="search-input-group">
+          <input 
+            v-model="searchName" 
+            type="text" 
+            placeholder="Search by name..." 
+            class="search-input search-by-name"
+          />
+        </div>
+        <div class="search-input-group">
+          <select v-model="searchType" class="search-select">
+            <option value="">All types</option>
+            <option v-for="type, index in pokemonTypes" :value="type" :key="index">{{type}}</option>
+          </select>
+        </div>
+        <button @click="clearFilters" class="clear-button">Clean</button>
+      </div>
+      <div class="results-info">
+        <span>Show {{ filteredPokemons.length }} from {{ pokemons.length }} Pokemon</span>
+      </div>
+    </div>
+
+    <!-- Grid de Pokemon -->
     <div class="row">
-      <div class="col-2" v-for="(pokemon, index) in pokemons" :key="pokemon.index">
+      <div class="col-2" v-for="(pokemon, index) in filteredPokemons" :key="index">
         <div
           class="inner-pokemon-container"
           :class="{
@@ -25,7 +50,7 @@
             'type-fairy': pokemon.types[0] === 'fairy',
           }"
         >
-          <span class="pokemon-number">#{{ index + 1 }}</span>
+          <span class="pokemon-number">#{{ pokemon.originalIndex + 1 }}</span>
           <div class="name-and-image">
             <img :src="pokemon.img" :alt="pokemon.name" class="pokemon-image" />
             <h2 class="pokemon-name">{{ pokemon.name }}</h2>
@@ -56,6 +81,7 @@
               >{{ pokemon.types[0] }}</span
             >
             <span
+              v-if="pokemon.types[1]"
               class="badge"
               :class="{
                 'badge-type-normal': pokemon.types[1] === 'normal',
@@ -93,26 +119,32 @@
                     <span>{{ pokemon.weight }} KG</span> 
                 </div>
             </div>
-            <!--span>Attacks:{{ pokemon.attacks.join(', ') }}</span-->
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Mensaje cuando no hay resultados -->
+    <div v-if="filteredPokemons.length === 0 && pokemons.length > 0" class="no-results">
+      <p>No Pokemons found</p>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import axios from 'axios'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 const pokemons = ref([])
+const searchName = ref('')
+const searchType = ref('')
 
 const getPokemonData = async () => {
   const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151')
   const results = response.data.results
 
   const detailedData = await Promise.all(
-    results.map(async (pokemon) => {
+    results.map(async (pokemon, originalIndex) => {
       const res = await axios.get(pokemon.url)
       const data = res.data
       const hp = data.stats.find((s) => s.stat.name === 'hp')?.base_stat || 0
@@ -127,6 +159,7 @@ const getPokemonData = async () => {
         weight: data.weight,
         types: types,
         attacks: attacks,
+        originalIndex: originalIndex
       }
     })
   )
@@ -134,17 +167,123 @@ const getPokemonData = async () => {
   pokemons.value = detailedData
 }
 
+const filteredPokemons = computed(() => {
+  return pokemons.value.filter(pokemon => {
+    const matchesName = pokemon.name.toLowerCase().includes(searchName.value.toLowerCase())
+    const matchesType = searchType.value === '' || pokemon.types.includes(searchType.value)
+    return matchesName && matchesType
+  })
+})
+
+
+const clearFilters = () => {
+  searchName.value = ''
+  searchType.value = ''
+}
+
 onMounted(getPokemonData)
-console.log(getPokemonData)
+
+
+const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug","ghost","steel","fire","water","grass","electric","psychic","ice","dragon","dark","fairy"]
 </script>
 
 <style lang="scss" scoped>
+.search-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #d6020f 0%, #800e0e 100%);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.search-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.search-input-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-input, .search-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+  
+  &:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+  }
+
+  option {
+    text-transform: capitalize;
+  }
+}
+
+.search-by-name {
+    text-transform: none;
+}
+.clear-button {
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+}
+
+.results-info {
+  text-align: center;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.no-results {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #666;
+  font-size: 1.2rem;
+  
+  p {
+    margin: 0;
+    font-weight: 500;
+  }
+}
+
 .inner-pokemon-container {
   box-shadow: 0 5px 5px #00000041;
   height: 420px;
   border-radius: 0.5rem;
   padding: 1rem;
   margin-bottom: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  }
+  
   * {
     color: #fff;
   }
@@ -300,6 +439,15 @@ console.log(getPokemonData)
   justify-content: center;
   gap: .5rem;
 }
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
 .pokemon-info {
     background-color: rgba(255, 255, 255, 0.03);
   box-shadow: 0 5px 5px #00000011;
@@ -331,5 +479,19 @@ console.log(getPokemonData)
             margin-top: .25rem;
         }
     }
+}
+
+@media (max-width: 768px) {
+  .search-container {
+    flex-direction: column;
+  }
+  
+  .search-input-group {
+    min-width: 100%;
+  }
+  
+  .clear-button {
+    width: 100%;
+  }
 }
 </style>
