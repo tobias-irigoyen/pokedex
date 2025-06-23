@@ -49,6 +49,7 @@
           }"
         >
           <span class="pokemon-number">#{{ pokemon.originalIndex + 1 }}</span>
+          <img :src="pokeBall" alt="pokeball" class="pokeball-image" />
           <div class="name-and-image">
             <img :src="pokemon.img" :alt="pokemon.name" class="pokemon-image" />
             <h2 class="pokemon-name">{{ pokemon.name }}</h2>
@@ -131,6 +132,7 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { ref, onMounted, computed } from 'vue'
+import pokeBall from "../../assets/img/pokeball-bg.png";
 
 const pokemons = ref([])
 const searchName = ref('')
@@ -275,6 +277,7 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   padding: 1rem;
   margin-bottom: 1rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
   
   &:hover {
     transform: translateY(-5px);
@@ -429,6 +432,13 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   }
   .badge-type-fighting {
     background: #8c5b29;
+  }
+
+  .pokeball-image {
+    opacity: .15;
+    position: absolute;
+    width: 20%;
+    right: 1rem;
   }
 }
 .types-badges-container {
