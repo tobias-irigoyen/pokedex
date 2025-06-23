@@ -1,6 +1,5 @@
 <template>
   <section id="pokemon-collection">
-    <!-- Sección de búsqueda -->
     <div class="search-section">
       <div class="search-container">
         <div class="search-input-group">
@@ -24,7 +23,6 @@
       </div>
     </div>
 
-    <!-- Grid de Pokemon -->
     <div class="row">
       <div class="col-2" v-for="(pokemon, index) in filteredPokemons" :key="index">
         <div
@@ -124,7 +122,6 @@
       </div>
     </div>
 
-    <!-- Mensaje cuando no hay resultados -->
     <div v-if="filteredPokemons.length === 0 && pokemons.length > 0" class="no-results">
       <p>No Pokemons found</p>
     </div>
