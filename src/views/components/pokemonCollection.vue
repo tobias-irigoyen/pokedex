@@ -24,12 +24,83 @@
       </div>
       <div class="results-info">
         <div v-if="isLoading" class="skeleton"></div>
-        <span v-if="!isLoading">Show {{ filteredPokemons.length }} from {{ pokemons.length }} Pokemon</span>
+        <span v-if="!isLoading">
+          Show {{ paginatedPokemons.length }} from {{ filteredPokemons.length }} Pokemon 
+          (Page {{ currentPage }} of {{ totalPages }})
+        </span>
       </div>
     </div>
-
     <div class="row">
-      <div class="col-2" v-for="(pokemon, index) in filteredPokemons" :key="index">
+      <div class="col-12">
+        <div v-if="totalPages > 1" class="pagination-container">
+        <div class="pagination">
+          
+          <button 
+            @click="goToPage(1)" 
+            :disabled="currentPage === 1"
+            class="pagination-btn first-last-btn"
+            title="First page"
+          >
+            ⟪
+          </button>
+          
+          <button 
+            @click="goToPage(currentPage - 1)" 
+            :disabled="currentPage === 1"
+            class="pagination-btn prev-next-btn"
+            title="Previous page"
+          >
+            ⟨
+          </button>
+          
+          <!-- Números de página -->
+          <template v-for="page, in visiblePages" :key="page">
+            <button
+              v-if="page !== '...'"
+              @click="goToPage(page)"
+              :class="['pagination-btn', 'page-number', { 'active': page === currentPage }]"
+            >
+              {{ page }}
+            </button>
+            <span v-else class="pagination-ellipsis">...</span>
+          </template>
+          
+          <button 
+            @click="goToPage(currentPage + 1)" 
+            :disabled="currentPage === totalPages"
+            class="pagination-btn prev-next-btn"
+            title="Next page"
+          >
+            ⟩
+          </button>
+          
+          <button 
+            @click="goToPage(totalPages)" 
+            :disabled="currentPage === totalPages"
+            class="pagination-btn first-last-btn"
+            title="Last page"
+          >
+            ⟫
+          </button>
+        </div>
+        
+        <!-- Selector de elementos por página -->
+        <div class="items-per-page">
+          <label>Items per page:</label>
+          <select v-model="itemsPerPage" @change="handleItemsPerPageChange">
+            <option :value="18">18</option>
+            <option :value="36">36</option>
+            <option :value="54">54</option>
+            <option :value="72">72</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- Grid de Pokemon -->
+    <div class="row">
+      <div class="col-2" v-for="(pokemon, index) in paginatedPokemons" :key="index">
         <div
           class="inner-pokemon-container"
           :class="{
@@ -128,6 +199,75 @@
       </div>
     </div>
 
+    <!-- Paginación -->
+    <div v-if="totalPages > 1" class="pagination-container">
+      <div class="pagination">
+        <!-- Botón Primera Página -->
+        <button 
+          @click="goToPage(1)" 
+          :disabled="currentPage === 1"
+          class="pagination-btn first-last-btn"
+          title="First page"
+        >
+          ⟪
+        </button>
+        
+        <!-- Botón Página Anterior -->
+        <button 
+          @click="goToPage(currentPage - 1)" 
+          :disabled="currentPage === 1"
+          class="pagination-btn prev-next-btn"
+          title="Previous page"
+        >
+          ⟨
+        </button>
+        
+        <!-- Números de página -->
+        <template v-for="page, in visiblePages" :key="page">
+          <button
+            v-if="page !== '...'"
+            @click="goToPage(page)"
+            :class="['pagination-btn', 'page-number', { 'active': page === currentPage }]"
+          >
+            {{ page }}
+          </button>
+          <span v-else class="pagination-ellipsis">...</span>
+        </template>
+        
+        <!-- Botón Página Siguiente -->
+        <button 
+          @click="goToPage(currentPage + 1)" 
+          :disabled="currentPage === totalPages"
+          class="pagination-btn prev-next-btn"
+          title="Next page"
+        >
+          ⟩
+        </button>
+        
+        <!-- Botón Última Página -->
+        <button 
+          @click="goToPage(totalPages)" 
+          :disabled="currentPage === totalPages"
+          class="pagination-btn first-last-btn"
+          title="Last page"
+        >
+          ⟫
+        </button>
+      </div>
+      
+      <!-- Selector de elementos por página -->
+      <div class="items-per-page">
+        <label>Items per page:</label>
+        <select v-model="itemsPerPage" @change="handleItemsPerPageChange">
+          <option :value="18">18</option>
+          <option :value="36">36</option>
+          <option :value="54">54</option>
+          <option :value="72">72</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Mensaje cuando no hay resultados -->
     <div v-if="filteredPokemons.length === 0 && pokemons.length > 0" class="no-results">
       <p>No Pokemons found</p>
     </div>
@@ -136,22 +276,21 @@
 
 <script setup lang="ts">
 import axios from 'axios'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import pokeBall from "../../assets/img/pokeball-bg.png";
 
 const pokemons = ref([])
 const searchName = ref('')
 const searchType = ref('')
 const isLoading = ref(false)
-
-
+const currentPage = ref(1)
+const itemsPerPage = ref(18)
 
 const getPokemonData = async () => {
   isLoading.value = true
   try {
     const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151')
     const results = response.data.results
-
     const detailedData = await Promise.all(
       results.map(async (pokemon, originalIndex) => {
         const res = await axios.get(pokemon.url)
@@ -159,7 +298,6 @@ const getPokemonData = async () => {
         const hp = data.stats.find((s) => s.stat.name === 'hp')?.base_stat || 0
         const types = data.types.map((t) => t.type.name)
         const attacks = data.moves.slice(0, 4).map((m) => m.move.name)
-
         return {
           name: data.name,
           img: data.sprites.other['official-artwork'].front_default,
@@ -172,7 +310,6 @@ const getPokemonData = async () => {
         }
       })
     )
-
     pokemons.value = detailedData
   } catch (error) {
     console.error('Error fetching Pokémon data:', error)
@@ -189,14 +326,77 @@ const filteredPokemons = computed(() => {
   })
 })
 
+const totalPages = computed(() => {
+  return Math.ceil(filteredPokemons.value.length / itemsPerPage.value)
+})
+
+const paginatedPokemons = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return filteredPokemons.value.slice(start, end)
+})
+
+
+const visiblePages = computed(() => {
+  const pages = []
+  const total = totalPages.value
+  const current = currentPage.value
+  
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) {
+      pages.push(i)
+    }
+  } else {
+    if (current <= 4) {
+      for (let i = 1; i <= 5; i++) {
+        pages.push(i)
+      }
+      pages.push('...')
+      pages.push(total)
+    } else if (current >= total - 3) {
+      pages.push(1)
+      pages.push('...')
+      for (let i = total - 4; i <= total; i++) {
+        pages.push(i)
+      }
+    } else {
+      pages.push(1)
+      pages.push('...')
+      for (let i = current - 1; i <= current + 1; i++) {
+        pages.push(i)
+      }
+      pages.push('...')
+      pages.push(total)
+    }
+  }
+  
+  return pages
+})
+
+const goToPage = (page: number) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+    
+    const targetElement = document.getElementById('pokemon-collection')
+    targetElement?.scrollIntoView({ behavior: 'smooth' })
+  }
+}
+
+const handleItemsPerPageChange = () => {
+  currentPage.value = 1
+}
 
 const clearFilters = () => {
   searchName.value = ''
   searchType.value = ''
+  currentPage.value = 1
 }
 
-onMounted(getPokemonData)
+watch([searchName, searchType], () => {
+  currentPage.value = 1
+})
 
+onMounted(getPokemonData)
 
 const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug","ghost","steel","fire","water","grass","electric","psychic","ice","dragon","dark","fairy"]
 </script>
@@ -239,7 +439,6 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
     background: rgba(255, 255, 255, 1);
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
   }
-
   option {
     text-transform: capitalize;
   }
@@ -248,6 +447,7 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
 .search-by-name {
     text-transform: none;
 }
+
 .clear-button {
   padding: 0.75rem 1.5rem;
   background: rgba(255, 255, 255, 0.2);
@@ -282,6 +482,103 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   p {
     margin: 0;
     font-weight: 500;
+  }
+}
+
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f7f7f7;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.pagination-container:first-of-type {
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pagination-btn {
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: #999;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  min-width: 40px;
+  
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  &.active {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-weight: 700;
+  }
+}
+
+.first-last-btn, .prev-next-btn {
+  font-size: 1.2rem;
+  color: #444;
+}
+
+.page-number {
+  min-width: 40px;
+}
+
+.pagination-ellipsis {
+  color: #999;
+  padding: 0 0.5rem;
+  font-weight: 600;
+}
+
+.items-per-page {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #444;
+  font-weight: 600;
+  
+  label {
+    font-size: 0.9rem;
+  }
+  
+  select {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-weight: 600;
+    cursor: pointer;
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
   }
 }
 
@@ -326,74 +623,57 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   &.type-normal {
     background: linear-gradient(to bottom, #ebebeb, #8e8e8e);
   }
-
   &.type-fighting {
     background: linear-gradient(to bottom, #f2aa62, #8c5b29);
   }
   &.type-flying {
     background: linear-gradient(to bottom, #81a0e8, #475a86);
   }
-
   &.type-poison {
     background: linear-gradient(to bottom, #f1c8fc, #622a72);
   }
-
   &.type-ground {
     background: linear-gradient(to bottom, #fae85d, #b9a932);
   }
-
   &.type-rock {
     background: linear-gradient(to bottom, #ffd87e, #af9350);
   }
-
   &.type-bug {
     background: linear-gradient(to bottom, #a6fe70, #479c13);
   }
-
   &.type-ghost {
     background: linear-gradient(to bottom, #cc31ef, #711b85);
   }
-
   &.type-steel {
     background: linear-gradient(to bottom, #d4d4d4, #606060);
   }
-
   &.type-fire {
     background: linear-gradient(to bottom, #ffbf64, #ae501a);
   }
-
   &.type-water {
     background: linear-gradient(to bottom, #2980b9, #6dd5fa);
   }
-
   &.type-grass {
     background: linear-gradient(to bottom, #9dce82, #aadc37);
   }
-
   &.type-electric {
     background: linear-gradient(to bottom, #ffed25, #aea007);
   }
-
   &.type-psychic {
     background: linear-gradient(to bottom, #f364d4, #873876);
   }
-
   &.type-ice {
     background: linear-gradient(to bottom, #67e2de, #3e9895);
   }
-
   &.type-dragon {
     background: linear-gradient(to bottom, #abeff8, #398d98);
   }
-
   &.type-dark {
     background: linear-gradient(to bottom, #886025, #61451a);
   }
-
   &.type-fairy {
     background: linear-gradient(to bottom, #ffb9f9, #9f679a);
   }
-
   .badge-type-normal {
     background: #8e8e8e;
   }
@@ -448,7 +728,6 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   .badge-type-fighting {
     background: #8c5b29;
   }
-
   .pokeball-image {
     opacity: .15;
     position: absolute;
@@ -456,6 +735,7 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
     right: 1rem;
   }
 }
+
 .types-badges-container {
   display: flex;
   justify-content: center;
@@ -515,6 +795,15 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   .clear-button {
     width: 100%;
   }
+  
+  .pagination-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .pagination {
+    justify-content: center;
+  }
 }
 
 .skeleton {
@@ -542,10 +831,12 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
 .search-input-group .skeleton {
   height: 48px; 
 }
+
 .results-info .skeleton {
   height: 40px; 
   width: 254px;
 }
+
 .button-skeleton {
   width: 96px;
   height: 52px;
