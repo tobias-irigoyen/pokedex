@@ -4,22 +4,27 @@
       <div class="search-container">
         <div class="search-input-group">
           <input 
+            v-if="!isLoading"
             v-model="searchName" 
             type="text" 
             placeholder="Search by name..." 
             class="search-input search-by-name"
           />
+          <div v-if="isLoading" class="skeleton w-100"></div>
         </div>
         <div class="search-input-group">
-          <select v-model="searchType" class="search-select">
+          <div v-if="isLoading" class="skeleton w-100"></div>
+          <select v-if="!isLoading" v-model="searchType" class="search-select" >
             <option value="">All types</option>
             <option v-for="type, index in pokemonTypes" :value="type" :key="index">{{type}}</option>
           </select>
         </div>
-        <button @click="clearFilters" class="clear-button">Clean</button>
+        <div v-if="isLoading" class="skeleton button-skeleton"></div>
+        <button v-if="!isLoading" @click="clearFilters" class="clear-button">Clean</button>
       </div>
       <div class="results-info">
-        <span>Show {{ filteredPokemons.length }} from {{ pokemons.length }} Pokemon</span>
+        <div v-if="isLoading" class="skeleton"></div>
+        <span v-if="!isLoading">Show {{ filteredPokemons.length }} from {{ pokemons.length }} Pokemon</span>
       </div>
     </div>
 
@@ -137,33 +142,43 @@ import pokeBall from "../../assets/img/pokeball-bg.png";
 const pokemons = ref([])
 const searchName = ref('')
 const searchType = ref('')
+const isLoading = ref(false)
+
+
 
 const getPokemonData = async () => {
-  const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151')
-  const results = response.data.results
+  isLoading.value = true
+  try {
+    const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151')
+    const results = response.data.results
 
-  const detailedData = await Promise.all(
-    results.map(async (pokemon, originalIndex) => {
-      const res = await axios.get(pokemon.url)
-      const data = res.data
-      const hp = data.stats.find((s) => s.stat.name === 'hp')?.base_stat || 0
-      const types = data.types.map((t) => t.type.name)
-      const attacks = data.moves.slice(0, 4).map((m) => m.move.name)
+    const detailedData = await Promise.all(
+      results.map(async (pokemon, originalIndex) => {
+        const res = await axios.get(pokemon.url)
+        const data = res.data
+        const hp = data.stats.find((s) => s.stat.name === 'hp')?.base_stat || 0
+        const types = data.types.map((t) => t.type.name)
+        const attacks = data.moves.slice(0, 4).map((m) => m.move.name)
 
-      return {
-        name: data.name,
-        img: data.sprites.other['official-artwork'].front_default,
-        hp_points: hp,
-        height: data.height,
-        weight: data.weight,
-        types: types,
-        attacks: attacks,
-        originalIndex: originalIndex
-      }
-    })
-  )
+        return {
+          name: data.name,
+          img: data.sprites.other['official-artwork'].front_default,
+          hp_points: hp,
+          height: data.height,
+          weight: data.weight,
+          types: types,
+          attacks: attacks,
+          originalIndex: originalIndex
+        }
+      })
+    )
 
-  pokemons.value = detailedData
+    pokemons.value = detailedData
+  } catch (error) {
+    console.error('Error fetching Pokémon data:', error)
+  } finally {
+    isLoading.value = false
+  }
 }
 
 const filteredPokemons = computed(() => {
@@ -500,5 +515,39 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   .clear-button {
     width: 100%;
   }
+}
+
+.skeleton {
+  display: inline-block;
+  border-radius: .5rem;
+  background: linear-gradient(
+    90deg,
+    #e0e0e0 25%,
+    #c0c0c0 50%,
+    #e0e0e0 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite linear;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.search-input-group .skeleton {
+  height: 48px; 
+}
+.results-info .skeleton {
+  height: 40px; 
+  width: 254px;
+}
+.button-skeleton {
+  width: 96px;
+  height: 52px;
 }
 </style>
