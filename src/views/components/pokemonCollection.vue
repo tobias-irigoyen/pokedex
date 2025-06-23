@@ -99,6 +99,7 @@
       <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2" v-for="(pokemon, index) in paginatedPokemons" :key="index">
         <div
           class="inner-pokemon-container"
+          @click="() => openModal(pokemon)"
           :class="{
             'type-normal': pokemon.types[0] === 'normal',
             'type-fighting': pokemon.types[0] === 'fighting',
@@ -121,8 +122,8 @@
           }"
         >
           <span class="pokemon-number">#{{ pokemon.originalIndex + 1 }}</span>
-          <img :src="pokeBall" alt="pokeball" class="pokeball-image" />
-          <img :src="pokeBall" alt="pokeball" class="pokeball-image-2" />
+          <img :src="pokeBall" alt="background pokeball" class="pokeball-image" />
+          <img :src="pokeBall" alt="background pokeball" class="pokeball-image-2" />
           <div class="name-and-image">
             <img :src="pokemon.img" :alt="pokemon.name" class="pokemon-image" />
             <h2 class="pokemon-name">{{ pokemon.name }}</h2>
@@ -264,7 +265,102 @@
     <div v-if="filteredPokemons.length === 0 && pokemons.length > 0" class="no-results">
       <p>No Pokemons found</p>
     </div>
+
+    
+    <teleport to="body">
+  <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
+    <div class="modal-content" 
+          :class="{
+            'type-normal': selectedPokemon.types[0] === 'normal',
+            'type-fighting': selectedPokemon.types[0] === 'fighting',
+            'type-flying': selectedPokemon.types[0] === 'flying',
+            'type-poison': selectedPokemon.types[0] === 'poison',
+            'type-ground': selectedPokemon.types[0] === 'ground',
+            'type-rock': selectedPokemon.types[0] === 'rock',
+            'type-bug': selectedPokemon.types[0] === 'bug',
+            'type-ghost': selectedPokemon.types[0] === 'ghost',
+            'type-steel': selectedPokemon.types[0] === 'steel',
+            'type-fire': selectedPokemon.types[0] === 'fire',
+            'type-water': selectedPokemon.types[0] === 'water',
+            'type-grass': selectedPokemon.types[0] === 'grass',
+            'type-electric': selectedPokemon.types[0] === 'electric',
+            'type-psychic': selectedPokemon.types[0] === 'psychic',
+            'type-ice': selectedPokemon.types[0] === 'ice',
+            'type-dragon': selectedPokemon.types[0] === 'dragon',
+            'type-dark': selectedPokemon.types[0] === 'dark',
+            'type-fairy': selectedPokemon.types[0] === 'fairy',
+          }">
+      <button class="modal-close" @click="showModal = false">×</button>
+      <div v-if="selectedPokemon">
+        <div class="row">
+          <div class="col-6 d-flex flex-column align-items-start justifiy-content-start pokemon-modal-stats">
+            <h2 style="text-transform: capitalize;">{{ selectedPokemon.name }}</h2>
+            <p><span class="stats-title">HP:</span><span> {{ selectedPokemon.hp_points }}</span></p>
+            <p><span class="stats-title">Height:</span><span> {{ selectedPokemon.height }} M</span></p>
+            <p><span class="stats-title">Weight:</span><span> {{ selectedPokemon.weight }} KG</span></p>
+            <p><span class="stats-title">Types:</span><span
+              class="badge"
+              :class="{
+                'badge-type-normal': selectedPokemon.types[0] === 'normal',
+                'badge-type-fighting': selectedPokemon.types[0] === 'fighting',
+                'badge-type-flying': selectedPokemon.types[0] === 'flying',
+                'badge-type-poison': selectedPokemon.types[0] === 'poison',
+                'badge-type-ground': selectedPokemon.types[0] === 'ground',
+                'badge-type-rock': selectedPokemon.types[0] === 'rock',
+                'badge-type-bug': selectedPokemon.types[0] === 'bug',
+                'badge-type-ghost': selectedPokemon.types[0] === 'ghost',
+                'badge-type-steel': selectedPokemon.types[0] === 'steel',
+                'badge-type-fire': selectedPokemon.types[0] === 'fire',
+                'badge-type-water': selectedPokemon.types[0] === 'water',
+                'badge-type-grass': selectedPokemon.types[0] === 'grass',
+                'badge-type-electric': selectedPokemon.types[0] === 'electric',
+                'badge-type-psychic': selectedPokemon.types[0] === 'psychic',
+                'badge-type-ice': selectedPokemon.types[0] === 'ice',
+                'badge-type-dragon': selectedPokemon.types[0] === 'dragon',
+                'badge-type-dark': selectedPokemon.types[0] === 'dark',
+                'badge-type-fairy': selectedPokemon.types[0] === 'fairy',
+              }"
+              >{{ selectedPokemon.types[0] }}</span
+            >
+            <span
+              v-if="selectedPokemon.types[1]"
+              class="badge"
+              :class="{
+                'badge-type-normal': selectedPokemon.types[1] === 'normal',
+                'badge-type-fighting': selectedPokemon.types[1] === 'fighting',
+                'badge-type-flying': selectedPokemon.types[1] === 'flying',
+                'badge-type-poison': selectedPokemon.types[1] === 'poison',
+                'badge-type-ground': selectedPokemon.types[1] === 'ground',
+                'badge-type-rock': selectedPokemon.types[1] === 'rock',
+                'badge-type-bug': selectedPokemon.types[1] === 'bug',
+                'badge-type-ghost': selectedPokemon.types[1] === 'ghost',
+                'badge-type-steel': selectedPokemon.types[1] === 'steel',
+                'badge-type-fire': selectedPokemon.types[1] === 'fire',
+                'badge-type-water': selectedPokemon.types[1] === 'water',
+                'badge-type-grass': selectedPokemon.types[1] === 'grass',
+                'badge-type-electric': selectedPokemon.types[1] === 'electric',
+                'badge-type-psychic': selectedPokemon.types[1] === 'psychic',
+                'badge-type-ice': selectedPokemon.types[1] === 'ice',
+                'badge-type-dragon': selectedPokemon.types[1] === 'dragon',
+                'badge-type-dark': selectedPokemon.types[1] === 'dark',
+                'badge-type-fairy': selectedPokemon.types[1] === 'fairy',
+              }"
+              >{{ selectedPokemon.types[1] }}</span
+            ></p>
+            <p><span class="stats-title">Attacks:</span><span class="attacks-list"> {{ selectedPokemon.attacks.join(', ') }}</span></p>
+          </div>
+          <div class="col-6">
+            <img :src="selectedPokemon.img" :alt="selectedPokemon.name" class="modal-pokemon-image" />
+            <img :src="pokeBall" alt="background pokeball" class="modal-pokeball-image-1" />
+            <img :src="pokeBall" alt="background pokeball" class="modal-pokeball-image-2" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</teleport>
   </section>
+  
 </template>
 
 <script setup lang="ts">
@@ -278,6 +374,8 @@ const searchType = ref('')
 const isLoading = ref(false)
 const currentPage = ref(1)
 const itemsPerPage = ref(18)
+const showModal = ref(false)
+const selectedPokemon = ref<any | null>(null)
 
 const getPokemonData = async () => {
   isLoading.value = true
@@ -393,6 +491,11 @@ watch([searchName, searchType], () => {
 onMounted(getPokemonData)
 
 const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug","ghost","steel","fire","water","grass","electric","psychic","ice","dragon","dark","fairy"]
+
+const openModal = (pokemon: any) => {
+  selectedPokemon.value = pokemon
+  showModal.value = true
+}
 
 </script>
 
@@ -666,6 +769,69 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   &.type-fairy {
     background: linear-gradient(to bottom, #ffb9f9, #9f679a);
   }
+  .pokeball-image {
+    opacity: .15;
+    position: absolute;
+    width: 20%;
+    right: 1rem;
+  }
+  .pokeball-image-2 {
+    opacity: .05;
+    position: absolute;
+    width: 50%;
+    left: -25%;
+    bottom: 33%;
+  }
+}
+
+.types-badges-container {
+  display: flex;
+  justify-content: center;
+  gap: .5rem;
+}
+
+
+
+.pokemon-info {
+    background-color: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 5px 5px #00000011;
+    border-radius: .5rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    .pokemon-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        * {
+            font-weight: 600;
+        }
+    }
+    .pokemon-hp {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .hp-bar {
+            width: 100%;
+            max-width: 80%;
+            height: 5px;
+            background-color: rgb(26, 223, 190);
+            display: flex;
+        }
+        .hp-points {
+            font-size: .925rem;
+            margin-top: .25rem;
+        }
+    }
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
   .badge-type-normal {
     background: #8e8e8e;
   }
@@ -720,67 +886,6 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   .badge-type-fighting {
     background: #8c5b29;
   }
-  .pokeball-image {
-    opacity: .15;
-    position: absolute;
-    width: 20%;
-    right: 1rem;
-  }
-  .pokeball-image-2 {
-    opacity: .05;
-    position: absolute;
-    width: 50%;
-    left: -25%;
-    bottom: 33%;
-  }
-}
-
-.types-badges-container {
-  display: flex;
-  justify-content: center;
-  gap: .5rem;
-}
-
-.badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.pokemon-info {
-    background-color: rgba(255, 255, 255, 0.03);
-  box-shadow: 0 5px 5px #00000011;
-    border-radius: .5rem;
-    padding: 1rem;
-    margin-top: 1rem;
-    .pokemon-stats {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 1rem;
-        * {
-            font-weight: 600;
-        }
-    }
-    .pokemon-hp {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        .hp-bar {
-            width: 100%;
-            max-width: 80%;
-            height: 5px;
-            background-color: rgb(26, 223, 190);
-            display: flex;
-        }
-        .hp-points {
-            font-size: .925rem;
-            margin-top: .25rem;
-        }
-    }
-}
 
 @media (max-width: 768px) {
   .search-container {
@@ -840,4 +945,198 @@ const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug
   width: 96px;
   height: 52px;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 750px;
+  text-align: center;
+  color: #333;
+  position: relative;
+  overflow: hidden;
+  
+  .badge-type-normal {
+    background: #8e8e8e;
+  }
+  .badge-type-flying {
+    background: #475a86;
+  }
+  .badge-type-poison {
+    background: #622a72;
+  }
+  .badge-type-ground {
+    background: #b9a932;
+  }
+  .badge-type-rock {
+    background: #af9350;
+  }
+  .badge-type-bug {
+    background: #5fd317;
+  }
+  .badge-type-ghost {
+    background: #cc31ef;
+  }
+  .badge-type-steel {
+    background: #d4d4d4;
+  }
+  .badge-type-fire {
+    background: #ab1c1c;
+  }
+  .badge-type-water {
+    background: #3763e8;
+  }
+  .badge-type-grass {
+    background: green;
+  }
+  .badge-type-electric {
+    background: #ffed25;
+  }
+  .badge-type-psychic {
+    background: #f364d4;
+  }
+  .badge-type-ice {
+    background: #3e9895;
+  }
+  .badge-type-dragon {
+    background: #71c8d3;
+  }
+  .badge-type-dark {
+    background: #886025;
+  }
+  .badge-type-fairy {
+    background: #ffa7f8;
+  }
+  .badge-type-fighting {
+    background: #8c5b29;
+  }
+  .pokemon-modal-stats {
+    h2 {
+      color: #FFF;
+      font-size: 600;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #FFF;
+      display: flex;
+      span.stats-title {
+        font-weight: 600;
+        margin-right: 1rem;
+        width: 100px;
+        height: max-content;
+        display: inline;
+        text-align: left;
+      }
+    }
+    .badge {
+      margin-right: .5rem;
+    }
+  }
+  .modal-pokeball-image-1 {
+    opacity: 0.1;
+    position: absolute;
+    width: 30%;
+    right: -7rem;
+    bottom: -2rem;
+    pointer-events: none;
+  }
+  .modal-pokeball-image-2 {
+    opacity: .05;
+    position: absolute;
+    width: 50%;
+    left: -15%;
+    bottom: 15%;
+    pointer-events: none;
+  }
+  .modal-pokemon-image {
+    z-index: 15;
+    position: relative;
+    width: 300px;
+  }
+  .attacks-list {
+    text-align: left;
+    margin-left: 1rem;
+  }
+}
+
+
+  .modal-content.type-normal {
+    background: linear-gradient(to left, #ebebeb, #8e8e8e);
+  }
+  .modal-content.type-fighting {
+    background: linear-gradient(to left, #f2aa62, #8c5b29);
+  }
+  .modal-content.type-flying {
+    background: linear-gradient(to left, #81a0e8, #475a86);
+  }
+  .modal-content.type-poison {
+    background: linear-gradient(to left, #f1c8fc, #622a72);
+  }
+  .modal-content.type-ground {
+    background: linear-gradient(to left, #fae85d, #b9a932);
+  }
+  .modal-content.type-rock {
+    background: linear-gradient(to left, #ffd87e, #af9350);
+  }
+  .modal-content.type-bug {
+    background: linear-gradient(to left, #a6fe70, #479c13);
+  }
+  .modal-content.type-ghost {
+    background: linear-gradient(to left, #cc31ef, #711b85);
+  }
+  .modal-content.type-steel {
+    background: linear-gradient(to left, #d4d4d4, #606060);
+  }
+  .modal-content.type-fire {
+    background: linear-gradient(to left, #ffbf64, #ae501a);
+  }
+  .modal-content.type-water {
+    background: linear-gradient(to left, #2980b9, #6dd5fa);
+  }
+  .modal-content.type-grass {
+    background: linear-gradient(to left, #9dce82, #aadc37);
+  }
+  .modal-content.type-electric {
+    background: linear-gradient(to left, #ffed25, #aea007);
+  }
+  .modal-content.type-psychic {
+    background: linear-gradient(to left, #f364d4, #873876);
+  }
+  .modal-content.type-ice {
+    background: linear-gradient(to left, #67e2de, #3e9895);
+  }
+  .modal-content.type-dragon {
+    background: linear-gradient(to left, #abeff8, #398d98);
+  }
+  .modal-content.type-dark {
+    background: linear-gradient(to left, #886025, #61451a);
+  }
+  .modal-content.type-fairy {
+    background: linear-gradient(to left, #ffb9f9, #9f679a);
+  }
+
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 </style>
