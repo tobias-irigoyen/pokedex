@@ -892,6 +892,7 @@ const typeClass = (type) => `type-${type}`;
         font-weight: 600;
         margin-right: 1rem;
         width: 100px;
+        min-width: 100px;
         height: max-content;
         display: inline;
         text-align: left;
@@ -924,7 +925,6 @@ const typeClass = (type) => `type-${type}`;
   }
   .attacks-list {
     text-align: left;
-    margin-left: 1rem;
   }
 }
 
