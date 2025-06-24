@@ -253,26 +253,7 @@
     <teleport to="body">
   <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
     <div class="modal-content" 
-          :class="{
-            'type-normal': selectedPokemon.types[0] === 'normal',
-            'type-fighting': selectedPokemon.types[0] === 'fighting',
-            'type-flying': selectedPokemon.types[0] === 'flying',
-            'type-poison': selectedPokemon.types[0] === 'poison',
-            'type-ground': selectedPokemon.types[0] === 'ground',
-            'type-rock': selectedPokemon.types[0] === 'rock',
-            'type-bug': selectedPokemon.types[0] === 'bug',
-            'type-ghost': selectedPokemon.types[0] === 'ghost',
-            'type-steel': selectedPokemon.types[0] === 'steel',
-            'type-fire': selectedPokemon.types[0] === 'fire',
-            'type-water': selectedPokemon.types[0] === 'water',
-            'type-grass': selectedPokemon.types[0] === 'grass',
-            'type-electric': selectedPokemon.types[0] === 'electric',
-            'type-psychic': selectedPokemon.types[0] === 'psychic',
-            'type-ice': selectedPokemon.types[0] === 'ice',
-            'type-dragon': selectedPokemon.types[0] === 'dragon',
-            'type-dark': selectedPokemon.types[0] === 'dark',
-            'type-fairy': selectedPokemon.types[0] === 'fairy',
-          }">
+          :class="typeClass(selectedPokemon.types[0])">
       <button class="modal-close" @click="showModal = false">×</button>
       <button class="nav-arrow nav-arrow-left" @click="prevPokemon" :disabled="!hasPrevPokemon">
         <i class="bi bi-chevron-left"></i>
@@ -290,51 +271,13 @@
             <p><span class="stats-title">Weight:</span><span> {{ selectedPokemon.weight }} KG</span></p>
             <p><span class="stats-title">Types:</span><span
               class="badge"
-              :class="{
-                'badge-type-normal': selectedPokemon.types[0] === 'normal',
-                'badge-type-fighting': selectedPokemon.types[0] === 'fighting',
-                'badge-type-flying': selectedPokemon.types[0] === 'flying',
-                'badge-type-poison': selectedPokemon.types[0] === 'poison',
-                'badge-type-ground': selectedPokemon.types[0] === 'ground',
-                'badge-type-rock': selectedPokemon.types[0] === 'rock',
-                'badge-type-bug': selectedPokemon.types[0] === 'bug',
-                'badge-type-ghost': selectedPokemon.types[0] === 'ghost',
-                'badge-type-steel': selectedPokemon.types[0] === 'steel',
-                'badge-type-fire': selectedPokemon.types[0] === 'fire',
-                'badge-type-water': selectedPokemon.types[0] === 'water',
-                'badge-type-grass': selectedPokemon.types[0] === 'grass',
-                'badge-type-electric': selectedPokemon.types[0] === 'electric',
-                'badge-type-psychic': selectedPokemon.types[0] === 'psychic',
-                'badge-type-ice': selectedPokemon.types[0] === 'ice',
-                'badge-type-dragon': selectedPokemon.types[0] === 'dragon',
-                'badge-type-dark': selectedPokemon.types[0] === 'dark',
-                'badge-type-fairy': selectedPokemon.types[0] === 'fairy',
-              }"
+              :class="badgeTypeClass(selectedPokemon.types[0])"
               >{{ selectedPokemon.types[0] }}</span
             >
             <span
               v-if="selectedPokemon.types[1]"
               class="badge"
-              :class="{
-                'badge-type-normal': selectedPokemon.types[1] === 'normal',
-                'badge-type-fighting': selectedPokemon.types[1] === 'fighting',
-                'badge-type-flying': selectedPokemon.types[1] === 'flying',
-                'badge-type-poison': selectedPokemon.types[1] === 'poison',
-                'badge-type-ground': selectedPokemon.types[1] === 'ground',
-                'badge-type-rock': selectedPokemon.types[1] === 'rock',
-                'badge-type-bug': selectedPokemon.types[1] === 'bug',
-                'badge-type-ghost': selectedPokemon.types[1] === 'ghost',
-                'badge-type-steel': selectedPokemon.types[1] === 'steel',
-                'badge-type-fire': selectedPokemon.types[1] === 'fire',
-                'badge-type-water': selectedPokemon.types[1] === 'water',
-                'badge-type-grass': selectedPokemon.types[1] === 'grass',
-                'badge-type-electric': selectedPokemon.types[1] === 'electric',
-                'badge-type-psychic': selectedPokemon.types[1] === 'psychic',
-                'badge-type-ice': selectedPokemon.types[1] === 'ice',
-                'badge-type-dragon': selectedPokemon.types[1] === 'dragon',
-                'badge-type-dark': selectedPokemon.types[1] === 'dark',
-                'badge-type-fairy': selectedPokemon.types[1] === 'fairy',
-              }"
+              :class="badgeTypeClass(selectedPokemon.types[1])"
               >{{ selectedPokemon.types[1] }}</span
             ></p>
             <p><span class="stats-title">Attacks:</span><span class="attacks-list"> {{ selectedPokemon.attacks.join(', ') }}</span></p>
@@ -507,6 +450,9 @@ const nextPokemon = () => {
     selectedPokemon.value = filteredPokemons.value[currentPokemonIndex.value];
   }
 };
+
+const badgeTypeClass = (type) => `badge-type-${type}`;
+const typeClass = (type) => `type-${type}`;
 </script>
 
 <style lang="scss" scoped>
