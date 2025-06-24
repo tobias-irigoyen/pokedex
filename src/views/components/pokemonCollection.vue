@@ -274,6 +274,13 @@
             'type-fairy': selectedPokemon.types[0] === 'fairy',
           }">
       <button class="modal-close" @click="showModal = false">×</button>
+      <button class="nav-arrow nav-arrow-left" @click="prevPokemon" :disabled="!hasPrevPokemon">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      
+      <button class="nav-arrow nav-arrow-right" @click="nextPokemon" :disabled="!hasNextPokemon">
+        <i class="bi bi-chevron-right"></i>
+      </button>
       <div v-if="selectedPokemon">
         <div class="row">
           <div class="col-6 d-flex flex-column align-items-start justifiy-content-start pokemon-modal-stats">
@@ -360,6 +367,7 @@ const currentPage = ref(1)
 const itemsPerPage = ref(18)
 const showModal = ref(false)
 const selectedPokemon = ref<any | null>(null)
+const currentPokemonIndex = ref(0);
 
 const getPokemonData = async () => {
   isLoading.value = true
@@ -478,10 +486,27 @@ onMounted(getPokemonData)
 const pokemonTypes = ["normal","fighting","flying","poison","ground","rock","bug","ghost","steel","fire","water","grass","electric","psychic","ice","dragon","dark","fairy"]
 
 const openModal = (pokemon: any) => {
-  selectedPokemon.value = pokemon
-  showModal.value = true
+  selectedPokemon.value = pokemon;
+  currentPokemonIndex.value = filteredPokemons.value.findIndex(p => p.originalIndex === pokemon.originalIndex);
+  showModal.value = true;
 }
 
+const hasPrevPokemon = computed(() => currentPokemonIndex.value > 0);
+const hasNextPokemon = computed(() => currentPokemonIndex.value < filteredPokemons.value.length - 1);
+
+const prevPokemon = () => {
+  if (hasPrevPokemon.value) {
+    currentPokemonIndex.value--;
+    selectedPokemon.value = filteredPokemons.value[currentPokemonIndex.value];
+  }
+};
+
+const nextPokemon = () => {
+  if (hasNextPokemon.value) {
+    currentPokemonIndex.value++;
+    selectedPokemon.value = filteredPokemons.value[currentPokemonIndex.value];
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -847,7 +872,7 @@ const openModal = (pokemon: any) => {
 .modal-content {
   background: white;
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 2.5rem;
   width: 750px;
   text-align: center;
   color: #333;
@@ -1022,6 +1047,41 @@ const openModal = (pokemon: any) => {
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
+}
+
+
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  
+  i {
+    font-size: 1.5rem;
+    color: #333;
+  }
+}
+
+.nav-arrow-left {
+  left: 5px;
+}
+
+.nav-arrow-right {
+  right: 5px;
 }
 
 </style>
