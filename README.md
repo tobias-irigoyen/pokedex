@@ -2,11 +2,11 @@
 
 ## Project Description
 
-🔎 This project consists of a Pokdex where you can find Pokémon by searching through their number, name, or type.
+🔎 This project consists of a Pokedex where you can find Pokémon by searching through their number, name, or type.
 
-📖 You can paginate the Pokémon with a desired amount per page, and use the Clean button to clear the current search. 
+📖 You can paginate the Pokemon with a desired amount per page, and use the Clean button to clear the current search. 
 
-➕ You can also click on a specific Pokémon to see more information.
+➕ You can also click on a specific Pokemon to see more information.
 
 📱 The application is responsive and cross-platform.
 
