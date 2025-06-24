@@ -24,7 +24,7 @@
       <div class="results-info">
         <div v-if="props.isLoading" class="skeleton"></div>
         <span v-if="!props.isLoading">
-          Show {{ props.paginatedItems.length }} from {{ props.filteredItems.length }} Pokemon 
+          Show {{ props.paginatedItems?.length }} from {{ props.filteredItems?.length }} Pokemon 
           (Page {{ props.currentPage }} of {{ props.totalPages }})
         </span>
       </div>

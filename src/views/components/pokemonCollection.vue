@@ -39,7 +39,7 @@
             <template v-for="page, in visiblePages" :key="page">
               <button
                 v-if="page !== '...'"
-                @click="goToPage(page)"
+                @click="goToPage(Number(page))"
                 :class="['pagination-btn', 'page-number', { 'active': page === currentPage }]"
               >
                 {{ page }}
@@ -85,12 +85,12 @@
           @click="() => openModal(pokemon)"
           :class="typeClass(pokemon.types[0])"
         >
-          <span class="pokemon-number">#{{ pokemon.originalIndex + 1 }}</span>
+          <span class="pokemon-number">#{{ (pokemon.originalIndex as number) + 1 }}</span>
           <img :src="pokeBall" alt="background pokeball" class="pokeball-image" />
           <img :src="pokeBall" alt="background pokeball" class="pokeball-image-2" />
           <div class="name-and-image">
-            <img :src="pokemon.img" :alt="pokemon.name" class="pokemon-image" />
-            <h2 class="pokemon-name">{{ pokemon.name }}</h2>
+            <img :src="(pokemon.img as string)" :alt="(pokemon.name as string)" class="pokemon-image" />
+            <h2 class="pokemon-name">{{ (pokemon.name as string) }}</h2>
           </div>
           <div class="types-badges-container">
             <span
@@ -148,7 +148,7 @@
             <template v-for="page, in visiblePages" :key="page">
               <button
                 v-if="page !== '...'"
-                @click="goToPage(page)"
+                @click="goToPage(page as number)"
                 :class="['pagination-btn', 'page-number', { 'active': page === currentPage }]"
               >
                 {{ page }}
@@ -208,7 +208,7 @@
       <div v-if="selectedPokemon">
         <div class="row modal-pokemon-row">
           <div class="col-10 col-sm-8 col-md-6 col-lg-6 col-xl-6 d-flex flex-column align-items-start justifiy-content-start pokemon-modal-stats">
-            <span class="modal-pokemon-number">#{{ selectedPokemon.originalIndex + 1 }}</span>
+            <span class="modal-pokemon-number">#{{ (selectedPokemon.originalIndex as number) + 1 }}</span>
             <h2>{{ selectedPokemon.name }}</h2>
             <p><span class="stats-title">HP:</span><span> {{ selectedPokemon.hp_points }}</span></p>
             <p><span class="stats-title">Height:</span><span> {{ selectedPokemon.height }} M</span></p>
@@ -227,7 +227,7 @@
             <p><span class="stats-title">Attacks:</span><span class="attacks-list"> {{ selectedPokemon.attacks.join(', ') }}</span></p>
           </div>
           <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-            <img :src="selectedPokemon.img" :alt="selectedPokemon.name" class="modal-pokemon-image" />
+            <img :src="selectedPokemon.img" :alt="(selectedPokemon.name as string)" class="modal-pokemon-image" />
             <img :src="pokeBall" alt="background pokeball" class="modal-pokeball-image-1" />
             <img :src="pokeBall" alt="background pokeball" class="modal-pokeball-image-2" />
           </div>
@@ -246,7 +246,18 @@ import { ref, onMounted, computed, watch } from 'vue'
 import pokeBall from "../../assets/img/pokeball-bg.png";
 import pokemonSearchbar from './pokemonSearchbar.vue';
 
-const pokemons = ref([])
+interface Pokemon {
+  originalIndex: number
+  name: string
+  img: string
+  types: string[]
+  hp_points: number
+  height: number
+  weight: number
+  url: string
+}
+
+const pokemons = ref<Pokemon[]>([])
 const searchName = ref('')
 const searchType = ref('')
 const isLoading = ref(false)
@@ -262,12 +273,12 @@ const getPokemonData = async () => {
     const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151')
     const results = response.data.results
     const detailedData = await Promise.all(
-      results.map(async (pokemon, originalIndex) => {
+      results.map(async (pokemon: Pokemon, originalIndex: number) => {
         const res = await axios.get(pokemon.url)
         const data = res.data
-        const hp = data.stats.find((s) => s.stat.name === 'hp')?.base_stat || 0
-        const types = data.types.map((t) => t.type.name)
-        const attacks = data.moves.slice(0, 4).map((m) => m.move.name)
+        const hp = data.stats.find((s: any) => s.stat.name === 'hp')?.base_stat || 0
+        const types = data.types.map((t: any) => t.type.name)
+        const attacks = data.moves.slice(0, 4).map((m: any) => m.move.name)
         return {
           name: data.name,
           img: data.sprites.other['official-artwork'].front_default,
@@ -395,8 +406,8 @@ const nextPokemon = () => {
   }
 };
 
-const badgeTypeClass = (type) => `badge-type-${type}`;
-const typeClass = (type) => `type-${type}`;
+const badgeTypeClass = (type: string) => `badge-type-${type}`;
+const typeClass = (type: string) => `type-${type}`;
 </script>
 
 <style lang="scss" scoped>
