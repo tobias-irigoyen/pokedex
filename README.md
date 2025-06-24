@@ -14,6 +14,7 @@
 ## Technology stack
 - Vue.js 3
 - Vite.js
+- Vue Router
 - Sass
 - Bootstrap 5
 - Bootstrap icons
