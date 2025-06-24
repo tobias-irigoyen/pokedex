@@ -208,6 +208,7 @@
       <div v-if="selectedPokemon">
         <div class="row modal-pokemon-row">
           <div class="col-10 col-sm-8 col-md-6 col-lg-6 col-xl-6 d-flex flex-column align-items-start justifiy-content-start pokemon-modal-stats">
+            <span class="modal-pokemon-number">#{{ selectedPokemon.originalIndex + 1 }}</span>
             <h2>{{ selectedPokemon.name }}</h2>
             <p><span class="stats-title">HP:</span><span> {{ selectedPokemon.hp_points }}</span></p>
             <p><span class="stats-title">Height:</span><span> {{ selectedPokemon.height }} M</span></p>
@@ -770,6 +771,13 @@ const typeClass = (type) => `type-${type}`;
   color: #333;
   position: relative;
   overflow: hidden;
+  
+  .modal-pokemon-number {
+    color: #FFF;
+    position: absolute;
+    left: 2.5rem;
+    top: 1rem;
+  }
   
   .badge-type-normal {
     background: #8e8e8e;
