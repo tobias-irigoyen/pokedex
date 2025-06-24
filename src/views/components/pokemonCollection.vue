@@ -1001,7 +1001,7 @@ const typeClass = (type: string) => `type-${type}`;
 @media (max-width: 768px) {
   .modal-content {
     max-width: 80%;
-    height: 95%;
+    height: auto;
     padding: .5rem;
     .modal-pokemon-row {
       flex-direction: column-reverse;
@@ -1018,7 +1018,7 @@ const typeClass = (type: string) => `type-${type}`;
         }
       }
       .modal-pokemon-image {
-        width: 160px;
+        width: 300px;
       }
     }
   }
