@@ -10,6 +10,8 @@
 
 📱 The application is responsive and cross-platform.
 
+🌐 You can also try the app by visiting the following link ➡️ https://tobias-irigoyen.github.io/pokedex/
+
 
 ## Technology stack
 - Vue.js 3
