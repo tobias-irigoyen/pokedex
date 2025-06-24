@@ -80,6 +80,9 @@ const handleClearFilters = () => {
   background-color: #d6020f;
   border-radius: 1rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .search-container {
