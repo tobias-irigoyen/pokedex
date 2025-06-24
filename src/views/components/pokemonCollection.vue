@@ -872,6 +872,7 @@ const typeClass = (type) => `type-${type}`;
   }
   .attacks-list {
     text-align: left;
+    text-transform: capitalize;
   }
 }
 
