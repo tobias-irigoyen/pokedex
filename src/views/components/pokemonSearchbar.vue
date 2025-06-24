@@ -142,7 +142,7 @@ const handleClearFilters = () => {
   text-align: center;
   color: white;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
