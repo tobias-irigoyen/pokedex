@@ -486,9 +486,9 @@ const openModal = (pokemon: any) => {
 
 <style lang="scss" scoped>
 
-
-
-
+#pokemon-collection {
+  padding-top: 24px;
+}
 .no-results {
   text-align: center;
   padding: 3rem 2rem;
@@ -500,8 +500,6 @@ const openModal = (pokemon: any) => {
     font-weight: 500;
   }
 }
-
-
 .pagination-container {
   display: flex;
   justify-content: space-between;
@@ -610,6 +608,7 @@ const openModal = (pokemon: any) => {
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
   }
   
   * {

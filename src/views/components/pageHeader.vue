@@ -8,8 +8,8 @@
             </div>
             <div class="col-6 col-md-4 col-lg-4 col-xl-4 info-col">
                 <h2>Try the Pokedex and find the Pokemons</h2>
-                <p>Use our Pokedex by entering the Pokemon's number or name to see its image, type, weight, height, and much more!</p>
-                <button class="primary-button">Try it!</button>
+                <p>Use our Pokedex by entering the Pokemon's name, number or type to see its image, type, weight, height, and much more!</p>
+                <button @click="goToPokedex" class="primary-button">Try it!</button>
             </div>
             <div class="col-6 col-md-8 col-lg-8 col-xl-8 header-image-container">
                 <img :src="pokedex" alt="pokedex" class="header-image" />
@@ -24,6 +24,12 @@
 import pokedex from "../../assets/img/pokedex-3d.png"
 import pokedexLogo from "../../assets/img/pokedex-logo.png"
 
+
+const goToPokedex = () => {
+    const targetElement = document.getElementById('pokemon-collection')
+    targetElement?.scrollIntoView({ behavior: 'smooth' })
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -33,7 +39,6 @@ import pokedexLogo from "../../assets/img/pokedex-logo.png"
     margin-right: -12px;
     padding-top: 24px;
     padding-bottom: 24px;
-    margin-bottom: 24px;
     .logo-container {
         img {
             max-width: 240px;
