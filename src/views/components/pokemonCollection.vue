@@ -263,9 +263,9 @@
         <i class="bi bi-chevron-right"></i>
       </button>
       <div v-if="selectedPokemon">
-        <div class="row">
-          <div class="col-6 d-flex flex-column align-items-start justifiy-content-start pokemon-modal-stats">
-            <h2 style="text-transform: capitalize;">{{ selectedPokemon.name }}</h2>
+        <div class="row modal-pokemon-row">
+          <div class="col-10 col-sm-8 col-md-6 col-lg-6 col-xl-6 d-flex flex-column align-items-start justifiy-content-start pokemon-modal-stats">
+            <h2>{{ selectedPokemon.name }}</h2>
             <p><span class="stats-title">HP:</span><span> {{ selectedPokemon.hp_points }}</span></p>
             <p><span class="stats-title">Height:</span><span> {{ selectedPokemon.height }} M</span></p>
             <p><span class="stats-title">Weight:</span><span> {{ selectedPokemon.weight }} KG</span></p>
@@ -282,7 +282,7 @@
             ></p>
             <p><span class="stats-title">Attacks:</span><span class="attacks-list"> {{ selectedPokemon.attacks.join(', ') }}</span></p>
           </div>
-          <div class="col-6">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
             <img :src="selectedPokemon.img" :alt="selectedPokemon.name" class="modal-pokemon-image" />
             <img :src="pokeBall" alt="background pokeball" class="modal-pokeball-image-1" />
             <img :src="pokeBall" alt="background pokeball" class="modal-pokeball-image-2" />
@@ -799,6 +799,9 @@ const typeClass = (type) => `type-${type}`;
   .pagination {
     justify-content: center;
   }
+  .modal-content {
+    max-width: 90%;
+  }
 }
 
 
@@ -884,6 +887,7 @@ const typeClass = (type) => `type-${type}`;
       color: #FFF;
       font-size: 600;
       margin-bottom: 1rem;
+      text-transform: capitalize;
     }
     p {
       color: #FFF;
@@ -1030,4 +1034,35 @@ const typeClass = (type) => `type-${type}`;
   right: 5px;
 }
 
+
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 80%;
+    height: 95%;
+    padding: .5rem;
+    .modal-pokemon-row {
+      flex-direction: column-reverse;
+      .col-sm-8,
+      .col-12 {
+        display: flex!important;
+        align-items: flex-start!important;
+        justify-content: center!important;
+        margin-left: auto;
+        margin-right: auto;
+        h2 {
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+      .modal-pokemon-image {
+        width: 160px;
+      }
+    }
+  }
+}
+@media (max-width: 400px) {
+  .modal-pokemon-image {
+    width: 120px!important;
+  }
+}
 </style>
