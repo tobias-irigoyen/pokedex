@@ -83,26 +83,7 @@
         <div
           class="inner-pokemon-container"
           @click="() => openModal(pokemon)"
-          :class="{
-            'type-normal': pokemon.types[0] === 'normal',
-            'type-fighting': pokemon.types[0] === 'fighting',
-            'type-flying': pokemon.types[0] === 'flying',
-            'type-poison': pokemon.types[0] === 'poison',
-            'type-ground': pokemon.types[0] === 'ground',
-            'type-rock': pokemon.types[0] === 'rock',
-            'type-bug': pokemon.types[0] === 'bug',
-            'type-ghost': pokemon.types[0] === 'ghost',
-            'type-steel': pokemon.types[0] === 'steel',
-            'type-fire': pokemon.types[0] === 'fire',
-            'type-water': pokemon.types[0] === 'water',
-            'type-grass': pokemon.types[0] === 'grass',
-            'type-electric': pokemon.types[0] === 'electric',
-            'type-psychic': pokemon.types[0] === 'psychic',
-            'type-ice': pokemon.types[0] === 'ice',
-            'type-dragon': pokemon.types[0] === 'dragon',
-            'type-dark': pokemon.types[0] === 'dark',
-            'type-fairy': pokemon.types[0] === 'fairy',
-          }"
+          :class="typeClass(pokemon.types[0])"
         >
           <span class="pokemon-number">#{{ pokemon.originalIndex + 1 }}</span>
           <img :src="pokeBall" alt="background pokeball" class="pokeball-image" />
@@ -114,51 +95,13 @@
           <div class="types-badges-container">
             <span
               class="badge"
-              :class="{
-                'badge-type-normal': pokemon.types[0] === 'normal',
-                'badge-type-fighting': pokemon.types[0] === 'fighting',
-                'badge-type-flying': pokemon.types[0] === 'flying',
-                'badge-type-poison': pokemon.types[0] === 'poison',
-                'badge-type-ground': pokemon.types[0] === 'ground',
-                'badge-type-rock': pokemon.types[0] === 'rock',
-                'badge-type-bug': pokemon.types[0] === 'bug',
-                'badge-type-ghost': pokemon.types[0] === 'ghost',
-                'badge-type-steel': pokemon.types[0] === 'steel',
-                'badge-type-fire': pokemon.types[0] === 'fire',
-                'badge-type-water': pokemon.types[0] === 'water',
-                'badge-type-grass': pokemon.types[0] === 'grass',
-                'badge-type-electric': pokemon.types[0] === 'electric',
-                'badge-type-psychic': pokemon.types[0] === 'psychic',
-                'badge-type-ice': pokemon.types[0] === 'ice',
-                'badge-type-dragon': pokemon.types[0] === 'dragon',
-                'badge-type-dark': pokemon.types[0] === 'dark',
-                'badge-type-fairy': pokemon.types[0] === 'fairy',
-              }"
+              :class="badgeTypeClass(pokemon.types[0])"
               >{{ pokemon.types[0] }}</span
             >
             <span
               v-if="pokemon.types[1]"
               class="badge"
-              :class="{
-                'badge-type-normal': pokemon.types[1] === 'normal',
-                'badge-type-fighting': pokemon.types[1] === 'fighting',
-                'badge-type-flying': pokemon.types[1] === 'flying',
-                'badge-type-poison': pokemon.types[1] === 'poison',
-                'badge-type-ground': pokemon.types[1] === 'ground',
-                'badge-type-rock': pokemon.types[1] === 'rock',
-                'badge-type-bug': pokemon.types[1] === 'bug',
-                'badge-type-ghost': pokemon.types[1] === 'ghost',
-                'badge-type-steel': pokemon.types[1] === 'steel',
-                'badge-type-fire': pokemon.types[1] === 'fire',
-                'badge-type-water': pokemon.types[1] === 'water',
-                'badge-type-grass': pokemon.types[1] === 'grass',
-                'badge-type-electric': pokemon.types[1] === 'electric',
-                'badge-type-psychic': pokemon.types[1] === 'psychic',
-                'badge-type-ice': pokemon.types[1] === 'ice',
-                'badge-type-dragon': pokemon.types[1] === 'dragon',
-                'badge-type-dark': pokemon.types[1] === 'dark',
-                'badge-type-fairy': pokemon.types[1] === 'fairy',
-              }"
+              :class="badgeTypeClass(pokemon.types[1])"
               >{{ pokemon.types[1] }}</span
             >
           </div>
