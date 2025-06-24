@@ -397,8 +397,9 @@ const filteredPokemons = computed(() => {
   return pokemons.value.filter(pokemon => {
     const matchesName = pokemon.name.toLowerCase().includes(searchName.value.toLowerCase())
     const matchesEnteredType = pokemon.types[0].toLowerCase().includes(searchName.value.toLowerCase())
+    const matchesNumber = (pokemon.originalIndex + 1).toString().includes(searchName.value)
     const matchesType = searchType.value === '' || pokemon.types.includes(searchType.value)
-    return (matchesName || matchesEnteredType) && matchesType
+    return (matchesName || matchesEnteredType || matchesNumber) && matchesType
   })
 })
 
