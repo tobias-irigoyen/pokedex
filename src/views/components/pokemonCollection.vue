@@ -6,6 +6,7 @@
       :search="searchName"
       :selected-item="searchType"
       :search-placeholder="'Find your Pokemon...'"
+      :is-loading="isLoading"
       @update:search="(value: string) => (searchName = value)"
       @update:selectedItem="(value: string) => (searchType = value)"
       @clear-filters="clearFilters"
@@ -239,8 +240,13 @@ const showModal = ref(false)
 const selectedPokemon = ref<any | null>(null)
 const currentPokemonIndex = ref(0)
 
-const getPokemonData = async (page: number) => {
+onMounted(async () => {
   isLoading.value = true
+  await getPokemonData(currentPage.value)
+  isLoading.value = false
+})
+
+const getPokemonData = async (page: number) => {
   try {
     if (searchType.value) {
       const allPokemons: Pokemon[] = []
@@ -302,8 +308,6 @@ const getPokemonData = async (page: number) => {
     }
   } catch (error) {
     console.error('Error fetching Pokémon data:', error)
-  } finally {
-    isLoading.value = false
   }
 }
 
@@ -411,8 +415,6 @@ watch([searchName, searchType], async () => {
     }
   }
 })
-
-onMounted(getPokemonData)
 
 const pokemonTypes = [
   'normal',

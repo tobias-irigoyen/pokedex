@@ -40,7 +40,7 @@ import { ref, watch } from 'vue'
 const props = defineProps<{
   defaultOptionText: string
   options: string[]
-  isLoading: boolean
+  isLoading?: boolean
   searchPlaceholder: string
   paginatedItems: any[]
   filteredItems: any[]
