@@ -82,14 +82,24 @@
     </div>
 
     <div class="row">
-      <div class="col-12" v-if="isLoading && !paginatedPokemons.length">
+      <div
+        class="col-12 pokeball-loader-main-container"
+        v-if="
+          (isLoading && !filteredPokemons.length && !searchCompleted) ||
+          (!isLoading && !filteredPokemons.length && !searchCompleted)
+        "
+      >
         <div class="pokeball-loader-container">
           <img src="../../assets/img/pokeball-bg.png" alt="pokeball" />
           <span>Loading Pokemon...</span>
         </div>
       </div>
-      <div class="col-12 no-results" v-else-if="!paginatedPokemons.length && searchName">
-        <p>No Pokemons found</p>
+      <div
+        class="col-12 no-results"
+        v-if="!isLoading && !filteredPokemons.length && searchName && searchCompleted"
+      >
+        <i class="bi bi-search"></i>
+        <p>No Pokemon found</p>
       </div>
       <div
         class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 pokemons-main-container"
@@ -133,10 +143,6 @@
         </div>
       </div>
     </div>
-
-    <!--div v-if="filteredPokemons.length === 0 && pokemons.length > 0" class="no-results">
-      <p>No Pokemons found</p>
-    </div-->
 
     <teleport to="body">
       <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
@@ -239,6 +245,7 @@ const itemsPerPage = ref(18)
 const showModal = ref(false)
 const selectedPokemon = ref<any | null>(null)
 const currentPokemonIndex = ref(0)
+const searchCompleted = ref(false)
 
 onMounted(async () => {
   isLoading.value = true
@@ -404,15 +411,27 @@ const clearFilters = () => {
 
 watch([searchName, searchType], async () => {
   currentPage.value = 1
+  //isLoading.value = true
+  searchCompleted.value = false
 
-  if (searchType.value) {
-    await getPokemonData(1)
-  } else if (searchName.value) {
-    await getPokemonData(1)
-  } else {
-    if (pokemons.value.length !== totalPokemons) {
+  try {
+    if (searchType.value) {
       await getPokemonData(1)
+    } else if (searchName.value) {
+      await getPokemonData(1)
+      // Si la búsqueda terminó y no hay resultados
+      if (!filteredPokemons.value.length) {
+        searchCompleted.value = true
+      }
+    } else {
+      if (pokemons.value.length !== totalPokemons) {
+        await getPokemonData(1)
+      }
     }
+  } catch (error) {
+    console.error('Error fetching Pokémon data:', error)
+  } finally {
+    isLoading.value = false
   }
 })
 
@@ -470,13 +489,17 @@ const typeClass = (type: string) => `type-${type}`
 #pokemon-collection {
   padding-top: 24px;
   min-height: 1300px;
+  position: relative;
 }
 .no-results {
   text-align: center;
-  padding: 3rem 2rem;
   color: #666;
   font-size: 1.2rem;
-
+  position: absolute;
+  top: 20%;
+  i {
+    font-size: 3.5rem;
+  }
   p {
     margin: 0;
     font-weight: 500;
@@ -505,7 +528,6 @@ const typeClass = (type: string) => `type-${type}`
   gap: 0.5rem;
   flex-wrap: wrap;
 }
-
 .pagination-btn {
   padding: 0.5rem 0.75rem;
   border: none;
@@ -1083,16 +1105,20 @@ const typeClass = (type: string) => `type-${type}`
     width: 120px !important;
   }
 }
-.pokeball-loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  img {
-    height: 100px;
-    margin-bottom: 0.5rem;
-    opacity: 0.5;
+.pokeball-loader-main-container {
+  position: absolute;
+  top: 20%;
+  .pokeball-loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    img {
+      height: 100px;
+      margin-bottom: 0.5rem;
+      opacity: 0.5;
+    }
   }
 }
 </style>
