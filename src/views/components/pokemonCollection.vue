@@ -84,10 +84,7 @@
     <div class="row">
       <div
         class="col-12 pokeball-loader-main-container"
-        v-if="
-          (isLoading && !filteredPokemons.length && !searchCompleted) ||
-          (!isLoading && !filteredPokemons.length && !searchCompleted)
-        "
+        v-if="!filteredPokemons.length && !searchCompleted"
       >
         <div class="pokeball-loader-container">
           <img src="../../assets/img/pokeball-bg.png" alt="pokeball" />
